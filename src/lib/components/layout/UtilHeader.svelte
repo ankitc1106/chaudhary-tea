@@ -1,0 +1,48 @@
+<script lang="ts">
+  import sahiHero from "$lib/images/sahiHero.png";
+  import Icon from "@iconify/svelte";
+  import Logo from "$lib/images/logo.svg";
+  import ShahiTea from "$lib/images/shahi-tea.png";
+
+  import { page } from "$app/stores";
+  import { urlForImage } from "$lib/sanity";
+  import { isNavOpen } from "$lib/state";
+
+  export let logo: string;
+
+  let brandlist = $page.data.brandList;
+</script>
+
+<div class="bg-shahi-orange py-5">
+  <header class="flex mx-auto max-w-[96%] items-center justify-between">
+    <button on:click={() => ($isNavOpen = true)}>
+      <Icon
+        icon="heroicons-solid:menu-alt-2"
+        class="md:h-9 md:w-9 w-6 h-6 text-gray-100 cursor-pointer"
+      />
+    </button>
+    <div>
+      <a href="/">
+        <img
+          src={urlForImage(logo, "width", 500)}
+          alt="Sahi Tea"
+          class=" h-10 md:h-12"
+        />
+      </a>
+    </div>
+    <a href="/contact-us" class="">
+      <Icon
+        icon="material-symbols:contact-support"
+        class="md:h-9 md:w-9 w-6 h-6 text-gray-100 cursor-pointer"
+      />
+    </a>
+    <!-- <div>
+      <a
+        href="/contact-us"
+        class=" px-3 md:px-5 text-white max-md:text-xs hover:scale-105 cursor-pointer duration-100 ease-linear transition py-2 font-rubik font-medium rounded-3xl bg-shahi-orange"
+      >
+        Lets Talk
+      </a>
+    </div> -->
+  </header>
+</div>
