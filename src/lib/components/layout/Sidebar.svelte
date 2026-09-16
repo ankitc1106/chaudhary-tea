@@ -50,32 +50,6 @@
           />
         </a>
       </div>
-      <div>
-        <a
-          href="/shahi"
-          on:click={() => ($isNavOpen = false)}
-          class="rounded-lg w-full bg-[#f07e03] px-5 py-3 flex justify-center items-center"
-        >
-          <img
-            src={urlForImage(brandlist[1].logo, "width", 300)}
-            class="  object-contain w-[33%]"
-            alt=""
-          />
-        </a>
-      </div>
-      <div>
-        <a
-          href="/power"
-          on:click={() => ($isNavOpen = false)}
-          class="rounded-lg w-full bg-[#2963ad] px-5 py-3 flex justify-center items-center"
-        >
-          <img
-            src={urlForImage(brandlist[2].logo, "width", 300)}
-            class="  object-contain w-[30%]"
-            alt=""
-          />
-        </a>
-      </div>
     </div>
 
     <div class=" py-10 space-y-6">

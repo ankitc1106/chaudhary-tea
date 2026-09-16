@@ -4,7 +4,7 @@ import type { ConfigType } from "$lib/types/configType";
 import type { contactType } from "$lib/types/contactType";
 import type { PageType } from "$lib/types/pageType";
 
-const layoutLogoQuery = `*[_type == "page" ] {
+const layoutLogoQuery = `*[_type == "page" && brandName == "Charcha"] {
     "logo" : logo.asset -> url,
 slug ,
     brandName,
