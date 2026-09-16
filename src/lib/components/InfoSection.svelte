@@ -2,6 +2,7 @@
   import { urlForImage } from "$lib/sanity";
   import type { infoSection } from "$lib/types/pageType";
   import { reveal } from "$lib/actions/reveal";
+  import { magnetic } from "$lib/actions/magnetic";
 
   export let infoDat: infoSection;
 </script>
@@ -29,8 +30,9 @@
       </p>
 
       <a
+        use:magnetic={0.3}
         href="/about-us"
-        class="inline-block w-max hover:bg-gold-light transition-all duration-300 bg-gold text-charcoal text-xs md:text-sm px-6 md:px-8 py-2.5 md:py-3 rounded-full font-rubik font-semibold uppercase tracking-wide"
+        class="inline-block w-max hover:bg-gold-light transition-all duration-200 ease-out bg-gold text-charcoal text-xs md:text-sm px-6 md:px-8 py-2.5 md:py-3 rounded-full font-rubik font-semibold uppercase tracking-wide"
         >About Us</a
       >
     </div>

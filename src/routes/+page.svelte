@@ -9,9 +9,13 @@
   import InfoSection from "$lib/components/InfoSection.svelte";
   import FeatureSection from "$lib/components/FeatureSection.svelte";
   import coffeeHero from "$lib/images/coffee-hero.jpg";
-  import coffeeDuo from "$lib/images/coffee-duo.jpg";
+  import coffeeGiftPack from "$lib/images/coffee-gift-pack.jpg";
   import charchaFamilyHero from "$lib/images/charcha-family-hero.jpg";
   import { reveal } from "$lib/actions/reveal";
+  import { magnetic } from "$lib/actions/magnetic";
+  import { cursorGlow } from "$lib/actions/cursorGlow";
+  import { tweened } from "svelte/motion";
+  import { cubicOut } from "svelte/easing";
   export let data;
 
   let pageData: PageType = data.pageData;
@@ -47,6 +51,9 @@
       unit: weight >= 1000 ? "kg" : "gm",
     };
   });
+
+  const animatedCoffeePrice = tweened(0, { duration: 450, easing: cubicOut });
+  $: if (coffeeVariants.length) animatedCoffeePrice.set(coffeeVariants[selectedCoffee].price);
 </script>
 
 <svelte:head>
@@ -66,25 +73,27 @@
     {/each}
   </div>
 
-  <div use:reveal class="relative bg-charcoal py-16 md:py-28 px-5 md:px-16 lg:px-24 overflow-hidden border-t border-gold/10">
+  <div use:cursorGlow class="relative bg-charcoal py-16 md:py-28 px-5 md:px-16 lg:px-24 overflow-hidden border-t border-gold/10">
     <div class="max-w-screen-2xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-      <div class="order-2 md:order-1 relative group overflow-hidden rounded-3xl">
+      <div use:reveal class="order-2 md:order-1 relative group overflow-hidden rounded-3xl bg-cream p-6 md:p-10">
         <div class="absolute -inset-4 border border-gold/30 rounded-3xl hidden md:block pointer-events-none z-10"></div>
-        <img
-          src={coffeeDuo}
-          alt="Choudhary's Charcha Arabica Coffee"
-          class="relative rounded-3xl w-full object-cover max-h-[520px] shadow-2xl transition-transform duration-700 ease-out group-hover:scale-105"
-        />
+        <div class="animate-float">
+          <img
+            src={coffeeGiftPack}
+            alt="Choudhary's Charcha Arabica Coffee Gift Pack"
+            class="relative w-full max-h-[440px] object-contain shadow-2xl transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+        </div>
       </div>
       <div class="order-1 md:order-2 space-y-4 md:space-y-6 text-cream">
-        <span class="text-gold uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold">
+        <span use:reveal={{ delay: 0 }} class="text-gold uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold">
           Introducing
         </span>
-        <h1 class="text-3xl md:text-5xl lg:text-6xl font-inria">
+        <h1 use:reveal={{ delay: 90 }} class="text-3xl md:text-5xl lg:text-6xl font-inria">
           Charcha Arabica Coffee
         </h1>
-        <div class="w-12 md:w-20 h-[2px] bg-gold"></div>
-        <p class="text-sm md:text-lg lg:text-xl text-cream/80 font-camby leading-relaxed max-w-lg">
+        <div use:reveal={{ delay: 180 }} class="w-12 md:w-20 h-[2px] bg-gold"></div>
+        <p use:reveal={{ delay: 270 }} class="text-sm md:text-lg lg:text-xl text-cream/80 font-camby leading-relaxed max-w-lg">
           Awaken your senses, one cup at a time. Charcha Arabica Coffee is a
           single-origin, medium roast made from 100% pure Arabica beans &mdash;
           freeze-dried to preserve its rich taste and aroma. No chicory, no
@@ -93,9 +102,9 @@
         </p>
 
         {#if coffeeVariants.length}
-          <div class="flex flex-wrap items-center gap-3 md:gap-4">
-            <div class="text-xl md:text-3xl font-inria font-medium text-cream">
-              &#8377;{coffeeVariants[selectedCoffee].price}
+          <div use:reveal={{ delay: 360 }} class="flex flex-wrap items-center gap-3 md:gap-4">
+            <div class="text-xl md:text-3xl font-inria font-medium text-cream tabular-nums">
+              &#8377;{Math.round($animatedCoffeePrice)}
             </div>
             <span class="text-cream/50 text-xs md:text-base"
               >/ {coffeeVariants[selectedCoffee].gram} {coffeeVariants[selectedCoffee].unit}</span
@@ -103,7 +112,7 @@
           </div>
 
           {#if coffeeVariants.length > 1}
-            <div class="flex flex-wrap gap-2 md:gap-3">
+            <div use:reveal={{ delay: 450 }} class="flex flex-wrap gap-2 md:gap-3">
               {#each coffeeVariants as v, i}
                 <button
                   on:click={() => (selectedCoffee = i)}
@@ -120,10 +129,11 @@
         {/if}
 
         <a
+          use:magnetic={0.3}
           href="https://wa.me/{data.config?.whatsappNumber ?? ''}"
           target="_blank"
           rel="noreferrer"
-          class="inline-block bg-gold hover:bg-gold-light text-charcoal transition-all duration-300 px-6 md:px-8 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-rubik font-semibold uppercase tracking-wide"
+          class="inline-block bg-gold hover:bg-gold-light text-charcoal transition-all duration-200 ease-out px-6 md:px-8 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-rubik font-semibold uppercase tracking-wide"
         >
           Enquire on WhatsApp
         </a>

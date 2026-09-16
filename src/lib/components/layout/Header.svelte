@@ -1,6 +1,8 @@
 <script lang="ts">
   import { urlForImage } from "$lib/sanity";
   import coffeeJar from "$lib/images/coffee-jar.jpg";
+  import { parallax } from "$lib/actions/parallax";
+  import { magnetic } from "$lib/actions/magnetic";
 
   export let bg: string;
   export let logo: string;
@@ -31,8 +33,9 @@
 
 <div class="relative h-[92vh] md:h-screen w-full overflow-hidden">
   <div
+    use:parallax={0.15}
     style="--bg-url: url({urlForImage(bg, 'width', 1920)})"
-    class="absolute inset-0 bg-cover bg-center scale-105 bg-[image:var(--bg-url)]"
+    class="absolute inset-0 bg-cover bg-center bg-[image:var(--bg-url)] will-change-transform"
   ></div>
   <div
     class="absolute inset-0 bg-gradient-to-b from-charcoal/85 via-charcoal/55 to-charcoal"
@@ -49,7 +52,10 @@
       class="flex gap-4 md:gap-8 items-start bg-cream/95 backdrop-blur rounded-2xl md:rounded-[2rem] shadow-2xl px-5 md:px-12 py-4 md:py-7 overflow-x-auto no-scrollbar max-w-full"
     >
       {#each lineup as item}
-        <div class="flex flex-col items-center gap-1.5 md:gap-2 shrink-0 w-14 md:w-24">
+        <div
+          use:magnetic={0.15}
+          class="flex flex-col items-center gap-1.5 md:gap-2 shrink-0 w-14 md:w-24 transition-transform duration-150 ease-out hover:scale-110 cursor-default"
+        >
           <img
             src={item.src}
             alt={item.name}

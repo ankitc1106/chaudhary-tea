@@ -1,9 +1,13 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
+  import { tweened } from "svelte/motion";
+  import { cubicOut } from "svelte/easing";
   import Icon from "@iconify/svelte";
   import type { productItem, variants } from "$lib/types/pageType";
   import { urlForImage } from "$lib/sanity";
   import { reveal } from "$lib/actions/reveal";
+  import { magnetic } from "$lib/actions/magnetic";
+  import { cursorGlow } from "$lib/actions/cursorGlow";
 
   let selected = 0;
   export let isReverse = false;
@@ -20,25 +24,34 @@
       unit: weight >= 1000 ? "kg" : "gm",
     };
   });
+
+  const animatedPrice = tweened(varinatList[selected]?.price ?? 0, {
+    duration: 450,
+    easing: cubicOut,
+  });
+
+  $: animatedPrice.set(varinatList[selected].price);
 </script>
 
 <section
-  use:reveal
+  use:cursorGlow
   class="relative flex flex-col md:flex-row {isReverse
     ? 'md:flex-row-reverse'
     : ''} min-h-[62vh] md:min-h-[80vh] {dark
     ? 'bg-charcoal'
     : 'bg-cream'}"
 >
-  <div class="group relative w-full md:w-1/2 h-[42vh] md:h-auto overflow-hidden">
-    {#key varinatList[selected].image}
-      <img
-        in:fade={{ duration: 350 }}
-        src={urlForImage(varinatList[selected].image, "width", 900)}
-        alt={product.title}
-        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-      />
-    {/key}
+  <div use:reveal class="group relative w-full md:w-1/2 h-[42vh] md:h-auto overflow-hidden">
+    <div class="absolute inset-0 animate-float">
+      {#key varinatList[selected].image}
+        <img
+          in:fade={{ duration: 350 }}
+          src={urlForImage(varinatList[selected].image, "width", 900)}
+          alt={product.title}
+          class="absolute inset-0 w-full h-full object-cover scale-105 transition-transform duration-700 ease-out group-hover:scale-110"
+        />
+      {/key}
+    </div>
     <div
       class="absolute inset-0 bg-gradient-to-t {dark
         ? 'from-charcoal/50'
@@ -51,6 +64,7 @@
   >
     <div class="max-w-md w-full space-y-4 md:space-y-6">
       <span
+        use:reveal={{ delay: 0 }}
         class="block uppercase tracking-widest2 text-[0.55rem] md:text-xs font-rubik font-semibold {dark
           ? 'text-gold'
           : 'text-gold-dark'}"
@@ -58,15 +72,17 @@
         Premium Blend
       </span>
       <h1
+        use:reveal={{ delay: 90 }}
         class="text-3xl md:text-5xl lg:text-6xl font-inria font-medium {dark
           ? 'text-cream'
           : 'text-charcoal'}"
       >
         {product.title}
       </h1>
-      <div class="w-12 md:w-16 h-[2px] bg-gold"></div>
+      <div use:reveal={{ delay: 180 }} class="w-12 md:w-16 h-[2px] bg-gold"></div>
 
       <p
+        use:reveal={{ delay: 270 }}
         class="text-sm md:text-lg font-camby leading-relaxed {dark
           ? 'text-cream/70'
           : 'text-charcoal/70'}"
@@ -74,22 +90,26 @@
         {product.description}
       </p>
 
-      <div class="flex flex-wrap items-center gap-3 md:gap-4 pt-1 md:pt-2">
+      <div
+        use:reveal={{ delay: 360 }}
+        class="flex flex-wrap items-center gap-3 md:gap-4 pt-1 md:pt-2"
+      >
         <div
-          class="text-xl md:text-3xl font-inria font-medium {dark
+          class="text-xl md:text-3xl font-inria font-medium tabular-nums {dark
             ? 'text-cream'
             : 'text-charcoal'}"
         >
-          &#8377;{varinatList[selected].price}
+          &#8377;{Math.round($animatedPrice)}
         </div>
         <span class="{dark ? 'text-cream/50' : 'text-charcoal/50'} text-xs md:text-base"
           >/ {varinatList[selected].gram} {varinatList[selected].unit}</span
         >
         {#if product.buyLink}
           <a
+            use:magnetic={0.3}
             href={product.buyLink}
             target="_blank"
-            class="ml-auto bg-gold hover:bg-gold-light text-charcoal transition-all duration-300 px-5 md:px-7 py-2 md:py-2.5 rounded-full text-[0.65rem] md:text-sm font-rubik font-semibold uppercase tracking-wide"
+            class="ml-auto bg-gold hover:bg-gold-light text-charcoal transition-all duration-200 ease-out px-5 md:px-7 py-2 md:py-2.5 rounded-full text-[0.65rem] md:text-sm font-rubik font-semibold uppercase tracking-wide"
           >
             Buy Now
           </a>
@@ -97,7 +117,10 @@
       </div>
 
       {#if varinatList.length > 1}
-        <div class="flex flex-wrap gap-2 md:gap-3 pt-1 md:pt-2">
+        <div
+          use:reveal={{ delay: 450 }}
+          class="flex flex-wrap gap-2 md:gap-3 pt-1 md:pt-2"
+        >
           {#each varinatList as a, i}
             <button
               on:click={() => (selected = i)}

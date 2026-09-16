@@ -3,10 +3,11 @@
   import type { featureSection } from "$lib/types/pageType";
   import Icon from "@iconify/svelte";
   import { reveal } from "$lib/actions/reveal";
+  import { cursorGlow } from "$lib/actions/cursorGlow";
   export let featData: featureSection;
 </script>
 
-<div use:reveal class="bg-charcoal py-16 md:py-28 px-5 md:px-16 lg:px-24">
+<div use:reveal use:cursorGlow class="bg-charcoal py-16 md:py-28 px-5 md:px-16 lg:px-24">
   <div class="max-w-screen-xl mx-auto">
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12 md:mb-20">
       <div>
