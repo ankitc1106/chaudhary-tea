@@ -73,7 +73,7 @@
     {/each}
   </div>
 
-  <div use:cursorGlow class="relative bg-charcoal py-16 md:py-28 px-5 md:px-16 lg:px-24 overflow-hidden border-t border-gold/10">
+  <div use:cursorGlow class="relative bg-cream py-16 md:py-28 px-5 md:px-16 lg:px-24 overflow-hidden border-t border-gold/10">
     <div class="max-w-screen-2xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
       <div use:reveal class="order-2 md:order-1 relative group overflow-hidden rounded-3xl p-6 md:p-10">
         <div class="absolute -inset-4 border border-gold/30 rounded-3xl hidden md:block pointer-events-none z-10"></div>
@@ -85,15 +85,15 @@
           />
         </div>
       </div>
-      <div class="order-1 md:order-2 space-y-4 md:space-y-6 text-cream">
-        <span use:reveal={{ delay: 0 }} class="text-gold uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold">
+      <div class="order-1 md:order-2 space-y-4 md:space-y-6 text-charcoal">
+        <span use:reveal={{ delay: 0 }} class="text-gold-dark uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold">
           Introducing
         </span>
         <h1 use:reveal={{ delay: 90 }} class="text-3xl md:text-5xl lg:text-6xl font-inria">
           Charcha Arabica Coffee
         </h1>
         <div use:reveal={{ delay: 180 }} class="w-12 md:w-20 h-[2px] bg-gold"></div>
-        <p use:reveal={{ delay: 270 }} class="text-sm md:text-lg lg:text-xl text-cream/80 font-camby leading-relaxed max-w-lg">
+        <p use:reveal={{ delay: 270 }} class="text-sm md:text-lg lg:text-xl text-charcoal/70 font-camby leading-relaxed max-w-lg">
           Awaken your senses, one cup at a time. Charcha Arabica Coffee is a
           single-origin, medium roast made from 100% pure Arabica beans &mdash;
           freeze-dried to preserve its rich taste and aroma. No chicory, no
@@ -103,10 +103,10 @@
 
         {#if coffeeVariants.length}
           <div use:reveal={{ delay: 360 }} class="flex flex-wrap items-center gap-3 md:gap-4">
-            <div class="text-xl md:text-3xl font-inria font-medium text-cream tabular-nums">
+            <div class="text-xl md:text-3xl font-inria font-medium text-charcoal tabular-nums">
               &#8377;{Math.round($animatedCoffeePrice)}
             </div>
-            <span class="text-cream/50 text-xs md:text-base"
+            <span class="text-charcoal/50 text-xs md:text-base"
               >/ {coffeeVariants[selectedCoffee].gram} {coffeeVariants[selectedCoffee].unit}</span
             >
           </div>
@@ -119,7 +119,7 @@
                   class="px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[0.6rem] md:text-sm font-rubik border transition-all duration-300 {selectedCoffee ===
                   i
                     ? 'bg-gold border-gold text-charcoal'
-                    : 'border-cream/25 text-cream/70 hover:border-gold/60'}"
+                    : 'border-charcoal/20 text-charcoal/70 hover:border-gold-dark/60'}"
                 >
                   {v.gram} {v.unit}
                 </button>
