@@ -9,7 +9,7 @@
   import InfoSection from "$lib/components/InfoSection.svelte";
   import FeatureSection from "$lib/components/FeatureSection.svelte";
   import coffeeHero from "$lib/images/coffee-hero.jpg";
-  import coffeeGiftPack from "$lib/images/coffee-gift-pack.jpg";
+  import coffeeGiftPack from "$lib/images/coffee-gift-pack.png";
   import charchaFamilyHero from "$lib/images/charcha-family-hero.jpg";
   import { reveal } from "$lib/actions/reveal";
   import { magnetic } from "$lib/actions/magnetic";
@@ -75,13 +75,13 @@
 
   <div use:cursorGlow class="relative bg-charcoal py-16 md:py-28 px-5 md:px-16 lg:px-24 overflow-hidden border-t border-gold/10">
     <div class="max-w-screen-2xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-      <div use:reveal class="order-2 md:order-1 relative group overflow-hidden rounded-3xl bg-cream p-6 md:p-10">
+      <div use:reveal class="order-2 md:order-1 relative group overflow-hidden rounded-3xl p-6 md:p-10">
         <div class="absolute -inset-4 border border-gold/30 rounded-3xl hidden md:block pointer-events-none z-10"></div>
         <div class="animate-float">
           <img
             src={coffeeGiftPack}
             alt="Choudhary's Charcha Arabica Coffee Gift Pack"
-            class="relative w-full max-h-[440px] object-contain shadow-2xl transition-transform duration-700 ease-out group-hover:scale-105"
+            class="relative w-full max-h-[440px] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.45)] transition-transform duration-700 ease-out group-hover:scale-105"
           />
         </div>
       </div>
