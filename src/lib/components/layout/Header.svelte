@@ -1,59 +1,67 @@
 <script lang="ts">
-  import sahiHero from "$lib/images/sahiHero.png";
-  import Icon from "@iconify/svelte";
-  import Logo from "$lib/images/logo.svg";
-  import ShahiTea from "$lib/images/shahi-tea.png";
-  import { isNavOpen } from "$lib/state";
-  import { page } from "$app/stores";
   import { urlForImage } from "$lib/sanity";
+  import coffeeJar from "$lib/images/coffee-jar.jpg";
 
   export let bg: string;
   export let logo: string;
 
-  let brandlist = $page.data.brandList;
+  const lineup = [
+    {
+      name: "Elaichi Tea",
+      src: "https://cdn.sanity.io/images/wyastv6s/production/37ee65b82aa30decec1b87d40d08b33b11167d83-2511x1867.png?w=300&auto=format",
+    },
+    {
+      name: "Gold Tea",
+      src: "https://cdn.sanity.io/images/wyastv6s/production/3de34f7262286238f5e4e10df9604c58c43476f0-2500x2241.png?w=300&auto=format",
+    },
+    {
+      name: "Green Tea",
+      src: "https://cdn.sanity.io/images/wyastv6s/production/d61cea74233b762d08d0263445490b281d4354ba-2500x2241.png?w=300&auto=format",
+    },
+    {
+      name: "Mix Masala",
+      src: "https://cdn.sanity.io/images/wyastv6s/production/616307fb22f702fb383ab6a09931373304ac3bec-2511x1867.png?w=300&auto=format",
+    },
+    {
+      name: "Arabica Coffee",
+      src: coffeeJar,
+    },
+  ];
 </script>
 
-<div
-  style="--bg-url: url({urlForImage(bg, 'width', 1500)})"
-  class="  lg:h-full max-md:bg-left bg-cover md:bg-bottom bg-[image:var(--bg-url)]"
->
-  <div class=" backdrop-brightness-75 h-full p-2 lg:p-5">
-    <div class="mx-auto max-w-[96%]">
-      <header class="flex items-center py-2 md:py-8 justify-between">
-        <!-- <button on:click={() => ($isNavOpen = true)}>
-          <Icon
-            icon="heroicons-solid:menu-alt-2"
-            class="md:h-9 md:w-9 w-6 h-6 text-gray-400 cursor-pointer"
+<div class="relative h-[92vh] md:h-screen w-full overflow-hidden">
+  <div
+    style="--bg-url: url({urlForImage(bg, 'width', 1920)})"
+    class="absolute inset-0 bg-cover bg-center scale-105 bg-[image:var(--bg-url)]"
+  ></div>
+  <div
+    class="absolute inset-0 bg-gradient-to-b from-charcoal/85 via-charcoal/55 to-charcoal"
+  ></div>
+
+  <div
+    class="relative h-full flex flex-col items-center justify-center text-center px-5 pt-24 md:pt-28"
+  >
+    <slot />
+  </div>
+
+  <div class="absolute -bottom-8 md:-bottom-12 inset-x-0 flex justify-center px-4 z-20">
+    <div
+      class="flex gap-4 md:gap-8 items-start bg-cream/95 backdrop-blur rounded-2xl md:rounded-[2rem] shadow-2xl px-5 md:px-12 py-4 md:py-7 overflow-x-auto no-scrollbar max-w-full"
+    >
+      {#each lineup as item}
+        <div class="flex flex-col items-center gap-1.5 md:gap-2 shrink-0 w-14 md:w-24">
+          <img
+            src={item.src}
+            alt={item.name}
+            class="h-12 md:h-20 w-full object-contain drop-shadow-md"
           />
-        </button> -->
-        <!-- <div>
-          <a href="/">
-            <img
-              src={urlForImage(logo, "width", 400)}
-              alt="Sahi Tea"
-              class=" h-10 md:h-20"
-            />
-          </a>
-        </div> -->
-        <!-- <a
-          href="/contact-us"
-          class="bg-shahi-orange p-2 rounded-full w-6 h-6 md:w-9 md:h-9 flex items-center"
-        >
-          <Icon
-            icon="material-symbols:contact-support"
-            class=" text-xl  text-white cursor-pointer"
-          />
-        </a> -->
-        <!-- <div>
-          <a
-            href="/contact-us"
-            class=" px-3 md:px-5 text-white max-md:text-xs hover:scale-105 cursor-pointer duration-100 ease-linear transition py-2 font-rubik font-medium rounded-3xl bg-shahi-orange"
+          <span
+            class="text-[0.5rem] md:text-xs font-rubik font-medium text-charcoal/70 text-center leading-tight"
           >
-            Lets Talk
-          </a>
-        </div> -->
-      </header>
-      <slot />
+            {item.name}
+          </span>
+        </div>
+      {/each}
     </div>
   </div>
 </div>

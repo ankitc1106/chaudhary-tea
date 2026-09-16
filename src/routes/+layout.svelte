@@ -6,13 +6,9 @@
   import "@fontsource-variable/rubik";
   import "@splidejs/svelte-splide/css";
   import Footer from "$lib/components/layout/Footer.svelte";
-  import { page } from "$app/stores";
   export let data;
-  import type { BrandNav } from "$lib/types/commonTypes";
   import Sidebar from "$lib/components/layout/Sidebar.svelte";
-  import { urlForImage } from "$lib/sanity";
   import Icon from "@iconify/svelte";
-  let brandlist: BrandNav[] = data.brandList;
 </script>
 
 <svelte:head>
@@ -22,30 +18,6 @@
 <main class="relative">
   <Sidebar />
   <slot />
-
-  <div
-    class="fixed z-50 flex gap-3 items-center w-max justify-center mx-auto p-4 inset-x-0 bottom-14 bg-gray-800 rounded-3xl"
-  >
-    {#each brandlist as brand}
-      {@const brandUrl =
-        brand.slug.current != "/"
-          ? `/${brand.slug.current.toString().trim()}`
-          : "/"}
-      <a
-        href={brandUrl}
-        class="px-2 py-1 rounded-2xl {$page.url.pathname === brandUrl ||
-        $page.url.pathname === brandUrl + '/'
-          ? 'bg-gray-500'
-          : ' '}"
-      >
-        <img
-          class="max-h-10"
-          src={urlForImage(brand.logo, "width", 300)}
-          alt=""
-        />
-      </a>
-    {/each}
-  </div>
 
   <Footer />
 

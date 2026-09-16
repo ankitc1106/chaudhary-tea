@@ -23,20 +23,13 @@
   <Topbar />
   <Header bg={pageData.heroSection.heroImage} logo={pageData.logo}>
     <Hero
-      logo={pageData.logo}
       defWidth="md:w-[50%] w-[80%]"
       description={pageData.heroSection.heroText}
     />
   </Header>
 
   {#each pageData.productSection as product, i}
-    {#if i === 0}
-      <Product {product} pattern={pageData.pattern} />
-    {:else if i % 2 === 0}
-      <Product {product} isFirst={true} pattern={pageData.pattern} />
-    {:else}
-      <Product {product} isReverse={true} pattern={pageData.pattern} />
-    {/if}
+    <Product {product} isReverse={i % 2 === 1} />
   {/each}
 
   <InfoSection infoDat={pageData.infoSection} />
