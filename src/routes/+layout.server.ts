@@ -8,8 +8,8 @@ const layoutLogoQuery = `*[_type == "page" && brandName == "Charcha"] {
     "logo" : logo.asset -> url,
 slug ,
     brandName,
-    navOrder
-    
+    navOrder,
+    "products": productSection[].title
   } | order(navOrder asc)`;
 
 const configQuery = `*[_type == "config"] {

@@ -13,6 +13,7 @@
   export let isReverse = false;
   export let product: productItem;
   export let dark = false;
+  export let id: string | undefined = undefined;
 
   let varinatList: variants[] = product.variants;
 
@@ -34,8 +35,9 @@
 </script>
 
 <section
+  {id}
   use:cursorGlow
-  class="relative flex flex-col md:flex-row {isReverse
+  class="relative flex flex-col md:flex-row scroll-mt-20 md:scroll-mt-24 {isReverse
     ? 'md:flex-row-reverse'
     : ''} min-h-[62vh] md:min-h-[80vh] {dark
     ? 'bg-charcoal'

@@ -45,4 +45,5 @@ export interface BrandNav {
   slug: { _type: string; current: string };
   brandName: string;
   navOrder: number;
+  products: string[];
 }

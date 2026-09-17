@@ -16,6 +16,7 @@
   import { cursorGlow } from "$lib/actions/cursorGlow";
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
+  import { slugify } from "$lib/utils/slug";
   export let data;
 
   let pageData: PageType = data.pageData;
@@ -69,11 +70,17 @@
 
   <div id="products" class="pt-14 md:pt-20">
     {#each displayProducts as product, i}
-      <Product {product} isReverse={i % 2 === 1} dark={i % 2 === 1} />
+      <Product {product} id={slugify(product.title)} isReverse={i % 2 === 1} dark={i % 2 === 1} />
     {/each}
   </div>
 
-  <div use:cursorGlow class="relative bg-cream py-16 md:py-28 px-5 md:px-16 lg:px-24 overflow-hidden border-t border-gold/10">
+  <div
+    id={slugify(
+      pageData.productSection.find((p) => /coff/i.test(p.title))?.title ?? "arabica-coffee"
+    )}
+    use:cursorGlow
+    class="relative bg-cream py-16 md:py-28 px-5 md:px-16 lg:px-24 overflow-hidden border-t border-gold/10 scroll-mt-20 md:scroll-mt-24"
+  >
     <div class="max-w-screen-2xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
       <div use:reveal class="order-2 md:order-1 relative group overflow-hidden rounded-3xl p-6 md:p-10">
         <div class="absolute -inset-4 border border-gold/30 rounded-3xl hidden md:block pointer-events-none z-10"></div>
