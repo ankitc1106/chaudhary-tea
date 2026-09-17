@@ -83,10 +83,13 @@
   <Header bg={heroCover} logo={pageData.logo}>
     <div
       use:reveal
-      class="absolute left-[5%] md:left-[8%] top-[18%] md:top-[22%] text-left max-w-[300px] md:max-w-2xl"
+      class="absolute left-[5%] md:left-[8%] top-[16%] md:top-[20%] text-left max-w-[300px] md:max-w-xl"
     >
-      <h1 class="font-berk text-cream text-2xl sm:text-3xl md:text-5xl lg:text-6xl leading-snug">
-        Banaras Ki Chai, <span class="text-gold">Duniya ki Charcha</span>
+      <h1 class="font-berk text-cream text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
+        Banaras Ki Chai
+      </h1>
+      <h1 class="font-berk text-gold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight -mt-2 md:-mt-3">
+        Duniya ki Charcha
       </h1>
       <div class="w-12 md:w-16 h-[3px] bg-gold rounded-full mt-3 md:mt-4"></div>
     </div>

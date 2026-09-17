@@ -1,6 +1,6 @@
 <script lang="ts">
   import "./styles.css";
-  import "@fontsource/berkshire-swash";
+  import "@fontsource/beau-rivage";
   import "@fontsource/cambay";
   import "@fontsource/inria-serif/700.css";
   import "@fontsource-variable/rubik";
