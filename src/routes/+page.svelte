@@ -84,7 +84,7 @@
     <Hero />
   </Header>
 
-  <div id="products" class="pt-14 md:pt-20">
+  <div id="products">
     {#each displayProducts as product, i}
       <Product
         {product}
