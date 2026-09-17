@@ -12,7 +12,7 @@
     <div
       use:parallax={0.15}
       style="--bg-url: url({urlForImage(bg, 'width', 1920)})"
-      class="absolute inset-0 bg-cover bg-[position:50%_15%] bg-[image:var(--bg-url)] will-change-transform"
+      class="absolute inset-0 bg-[length:70%_auto] bg-[position:50%_15%] bg-[image:var(--bg-url)] will-change-transform"
     ></div>
     <div
       class="absolute inset-0 bg-gradient-to-b from-charcoal/85 via-charcoal/55 to-charcoal"
