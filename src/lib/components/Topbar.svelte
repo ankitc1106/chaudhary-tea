@@ -4,6 +4,7 @@
   import { isNavOpen } from "$lib/state";
   import type { ConfigType } from "$lib/types/configType";
   import Icon from "@iconify/svelte";
+  import charchaLogo from "$lib/images/charcha-logo.png";
 
   let config = $page.data.config as ConfigType;
   let scrolled = false;
@@ -31,11 +32,7 @@
       />
     </button>
 
-    <span
-      class="font-inria text-cream text-base md:text-xl tracking-tight select-none"
-    >
-      Choudhary's <span class="text-gold">Charcha</span>
-    </span>
+    <img src={charchaLogo} alt="Choudhary's Charcha" class="h-9 md:h-12 w-auto select-none" />
 
     <a
       href="/contact-us"
