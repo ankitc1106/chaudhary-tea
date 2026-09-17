@@ -83,16 +83,11 @@
   <Header bg={heroCover} logo={pageData.logo}>
     <div
       use:reveal
-      class="absolute left-[6%] md:left-[9%] top-[10%] md:top-[13%] text-left max-w-[220px] md:max-w-xs"
+      class="absolute left-[6%] md:left-[9%] top-[10%] md:top-[13%] text-left max-w-[260px] md:max-w-sm"
     >
-      <span
-        class="block font-rubik text-gold uppercase tracking-widest2 text-[0.55rem] md:text-xs font-semibold mb-1.5 md:mb-2"
-      >
-        Est. In Conversation
-      </span>
-      <h1 class="font-inria text-cream text-3xl md:text-5xl leading-tight">Choudhary's</h1>
-      <h1 class="font-inria italic text-gold text-4xl md:text-6xl leading-tight -mt-1 md:-mt-2">
-        Charcha
+      <h1 class="font-inria text-cream text-3xl md:text-5xl leading-tight">Banaras Ki Chai,</h1>
+      <h1 class="font-inria italic text-gold text-3xl md:text-5xl leading-tight mt-1">
+        Duniya ki Charcha
       </h1>
       <div class="w-12 md:w-16 h-[3px] bg-gold rounded-full mt-3 md:mt-4"></div>
     </div>
