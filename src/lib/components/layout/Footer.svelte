@@ -17,7 +17,7 @@
 </script>
 
 <footer class="bg-charcoal border-t border-gold/10">
-  <div class="max-w-screen-lg mx-auto px-6 py-16 md:py-20 text-center pb-40 lg:pb-16">
+  <div class="max-w-screen-lg mx-auto px-6 py-16 md:py-20 text-center">
     <img
       src={urlForImage(config.footer.logo, "width", 400)}
       class="h-12 md:h-16 mx-auto object-contain"
