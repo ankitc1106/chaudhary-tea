@@ -13,6 +13,25 @@
 
 <svelte:head>
   <link rel="icon" href={data.config.favicon} />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Choudhary's Charcha" />
+  <meta property="og:title" content="Choudhary's Charcha — Brew Conversations" />
+  <meta
+    property="og:description"
+    content="Premium teas, spice blends, and coffee brewed for real conversations. From our Indian roots, we bring tradition, quality, and honest flavour to every cup."
+  />
+  <meta property="og:image" content="https://www.choudharys.in/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Choudhary's Charcha — Brew Conversations" />
+  <meta
+    name="twitter:description"
+    content="Premium teas, spice blends, and coffee brewed for real conversations."
+  />
+  <meta name="twitter:image" content="https://www.choudharys.in/og-image.jpg" />
 </svelte:head>
 
 <main class="relative">
