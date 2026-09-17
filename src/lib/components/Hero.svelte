@@ -14,15 +14,8 @@
     Est. Heritage &middot; 100% Authentic
   </span>
 
-  <h1
-    use:reveal={{ delay: 100 }}
-    class="font-berk text-cream text-3xl sm:text-4xl md:text-6xl lg:text-7xl leading-tight"
-  >
-    Choudhary's
-  </h1>
-
   <p
-    use:reveal={{ delay: 200 }}
+    use:reveal={{ delay: 120 }}
     class="text-xs sm:text-sm md:text-xl lg:text-2xl text-cream/85 font-light font-camby leading-relaxed max-w-xl"
   >
     {description}

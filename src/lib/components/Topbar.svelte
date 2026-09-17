@@ -32,9 +32,9 @@
     </button>
 
     <span
-      class="font-berk text-cream tracking-wide text-base md:text-2xl select-none"
+      class="font-inria text-cream text-base md:text-xl tracking-tight select-none"
     >
-      Choudhary's Charcha
+      Choudhary's <span class="text-gold">Charcha</span>
     </span>
 
     <a

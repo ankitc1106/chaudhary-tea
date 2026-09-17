@@ -4,7 +4,6 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        berk: ["Berkshire Swash", "sans-serif"],
         camby: ["Cambay", "sans-serif"],
         inria: ["Inria Serif", "sans-serif"],
         rubik: ["Rubik Variable", "sans-serif"],
