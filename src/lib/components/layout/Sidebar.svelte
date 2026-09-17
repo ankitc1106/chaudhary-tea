@@ -7,10 +7,6 @@
   let brandlist = $page.data.brandList;
   let products: string[] = brandlist?.[0]?.products ?? [];
 
-  const displayNameOverrides: Record<string, string> = {
-    "Charcha Coffe": "Arabica Coffee",
-  };
-
   let showProducts = false;
 
   function closeSidebar() {
@@ -65,7 +61,7 @@
                 on:click={closeSidebar}
                 class="block rounded-lg px-4 py-2.5 text-sm font-rubik text-charcoal/80 hover:bg-shahi-orange hover:text-white transition-all duration-300"
               >
-                {displayNameOverrides[title] ?? title}
+                {title}
               </a>
             {/each}
           </div>

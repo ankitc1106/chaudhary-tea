@@ -8,7 +8,6 @@
   import type { PageType } from "$lib/types/pageType";
   import InfoSection from "$lib/components/InfoSection.svelte";
   import FeatureSection from "$lib/components/FeatureSection.svelte";
-  import coffeeHero from "$lib/images/coffee-hero.jpg";
   import coffeeGiftPack from "$lib/images/coffee-gift-pack.png";
   import charchaFamilyHero from "$lib/images/charcha-family-hero.jpg";
   import { reveal } from "$lib/actions/reveal";
@@ -25,22 +24,29 @@
   // temporary local override so the improved copy shows immediately.
   const descriptionOverrides: Record<string, string> = {
     "Charcha Green Tea":
-      "More than a tea—a daily shield. Handcrafted with pure whole leaves, Charcha Green Tea delivers rich antioxidants and clean, jitter-free energy to protect your immunity and fuel your day. Smooth taste, zero bitterness.",
-    "Gold Tea":
-      "Bold by nature, golden by name. Charcha Gold Tea is a robust CTC blend built for strength and depth — the kind of full-bodied cup that holds its own with milk, sugar, or nothing at all. Rich, malty, and unmistakably satisfying.",
-    "Elaichi Tea":
-      "The chai that started it all. Charcha Elaichi Chai blends premium tea leaves with the warm, natural fragrance of hand-crushed cardamom — a recipe passed down and perfected, turning every cup into an invitation to sit, talk, and stay a while longer.",
+      "Somewhere between the first sip and the last, something shifts. Charcha Green Tea brings together whole, hand-picked leaves and a clean, antioxidant-rich brew that clears the mind as much as it soothes the body. No bitterness, no jitters — just a quiet moment that resets your whole day.",
+    "Charcha Gold Tea":
+      "This chai doesn't do small talk. Charcha Gold Tea is a bold, full-bodied CTC blend brewed to hold its ground — with milk, without milk, doesn't matter, it still shows up strong. Malty, rich, and just a little opinionated. The kind of cup that talks back.",
+    "Charcha Elaichi Chai":
+      "Some days need a pause button. Charcha Elaichi Chai is that pause — hand-crushed cardamom folded into premium tea leaves for a warm, fragrant brew that slows the room down. Not just chai — an invitation to sit a little longer and let the conversation breathe.",
     "Charcha Mix Masala":
-      "Generations of flavor, ground into every pinch. Charcha Mix Masala brings together hand-selected whole spices, roasted and blended the traditional way — no shortcuts, no fillers. Just the deep, authentic warmth that turns an everyday meal into a memory.",
+      "Every kitchen has one recipe nobody's allowed to mess with — this is ours. Charcha Mix Masala is ground from hand-selected whole spices the old way, no shortcuts pretending to be shortcuts. One pinch and it tastes like a memory you didn't know you missed.",
   };
 
   const taglineOverrides: Record<string, string> = {
     "Charcha Green Tea": "The Daily Detoxify",
+    "Charcha Gold Tea": "Bolne Wali Chai",
+    "Charcha Elaichi Chai": "Cardamom & Calm Down",
+    "Charcha Mix Masala": "Dadi Maa Ka Raaz",
   };
 
   const closingNoteOverrides: Record<string, string> = {
     "Charcha Green Tea": "Good conversations begin with good health",
   };
+
+  const coffeeDescription =
+    "For every conversation that needed one more cup. Charcha Arabica Coffee is a single-origin, medium roast made from 100% pure Arabica beans, freeze-dried to keep its aroma intact — no chicory, no watered-down excuses. Just honest coffee for people who talk business, gossip, or both.";
+  const coffeeTagline = "Bean There, Talked That";
 
   $: displayProducts = pageData.productSection
     .filter((p) => !/coff/i.test(p.title))
@@ -111,18 +117,14 @@
       </div>
       <div class="order-1 md:order-2 space-y-4 md:space-y-6 text-charcoal">
         <span use:reveal={{ delay: 0 }} class="text-gold-dark uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold">
-          Introducing
+          {coffeeTagline}
         </span>
         <h1 use:reveal={{ delay: 90 }} class="text-3xl md:text-5xl lg:text-6xl font-inria">
           Charcha Arabica Coffee
         </h1>
         <div use:reveal={{ delay: 180 }} class="w-12 md:w-20 h-[2px] bg-gold"></div>
         <p use:reveal={{ delay: 270 }} class="text-sm md:text-lg lg:text-xl text-charcoal/70 font-camby leading-relaxed max-w-lg">
-          Awaken your senses, one cup at a time. Charcha Arabica Coffee is a
-          single-origin, medium roast made from 100% pure Arabica beans &mdash;
-          freeze-dried to preserve its rich taste and aroma. No chicory, no
-          preservatives, no added sugar. Just honest coffee, the way it should
-          be.
+          {coffeeDescription}
         </p>
 
         {#if coffeeVariants.length}
@@ -163,11 +165,6 @@
         </a>
       </div>
     </div>
-    <img
-      src={coffeeHero}
-      alt=""
-      class="hidden lg:block absolute -right-24 top-1/2 -translate-y-1/2 w-[380px] opacity-20 pointer-events-none"
-    />
   </div>
 
   <InfoSection infoDat={pageData.infoSection} />
