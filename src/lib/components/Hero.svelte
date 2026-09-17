@@ -11,11 +11,18 @@
     use:reveal={{ delay: 0 }}
     class="text-gold uppercase tracking-widest2 text-[0.55rem] md:text-sm font-rubik font-medium"
   >
-    Est. Heritage &middot; 100% Authentic
+    Brewed For Better Conversations
   </span>
 
+  <h1
+    use:reveal={{ delay: 80 }}
+    class="font-inria text-cream text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-tight"
+  >
+    Choudhary's <span class="text-gold">Charcha</span>
+  </h1>
+
   <p
-    use:reveal={{ delay: 120 }}
+    use:reveal={{ delay: 200 }}
     class="text-xs sm:text-sm md:text-xl lg:text-2xl text-cream/85 font-light font-camby leading-relaxed max-w-xl"
   >
     {description}
