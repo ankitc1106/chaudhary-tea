@@ -14,6 +14,8 @@
   export let product: productItem;
   export let dark = false;
   export let id: string | undefined = undefined;
+  export let tagline = "Premium Blend";
+  export let closingNote: string | undefined = undefined;
 
   let varinatList: variants[] = product.variants;
 
@@ -71,7 +73,7 @@
           ? 'text-gold'
           : 'text-gold-dark'}"
       >
-        Premium Blend
+        {tagline}
       </span>
       <h1
         use:reveal={{ delay: 90 }}
@@ -91,6 +93,17 @@
       >
         {product.description}
       </p>
+
+      {#if closingNote}
+        <p
+          use:reveal={{ delay: 320 }}
+          class="text-sm md:text-lg font-camby italic font-bold {dark
+            ? 'text-gold'
+            : 'text-gold-dark'}"
+        >
+          {closingNote}
+        </p>
+      {/if}
 
       <div
         use:reveal={{ delay: 360 }}

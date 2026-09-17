@@ -24,8 +24,8 @@
   // TODO: move these into Sanity (productSection[].description) once CMS access is set up —
   // temporary local override so the improved copy shows immediately.
   const descriptionOverrides: Record<string, string> = {
-    "Green Tea":
-      "Steeped in nature, brewed for balance. Charcha Green Tea is crafted from tender, hand-picked leaves that retain their natural antioxidants and a clean, grassy character. Light on the palate yet deeply refreshing — it's the quiet ritual your day deserves.",
+    "Charcha Green Tea":
+      "More than a tea—a daily shield. Handcrafted with pure whole leaves, Charcha Green Tea delivers rich antioxidants and clean, jitter-free energy to protect your immunity and fuel your day. Smooth taste, zero bitterness.",
     "Gold Tea":
       "Bold by nature, golden by name. Charcha Gold Tea is a robust CTC blend built for strength and depth — the kind of full-bodied cup that holds its own with milk, sugar, or nothing at all. Rich, malty, and unmistakably satisfying.",
     "Elaichi Tea":
@@ -34,11 +34,21 @@
       "Generations of flavor, ground into every pinch. Charcha Mix Masala brings together hand-selected whole spices, roasted and blended the traditional way — no shortcuts, no fillers. Just the deep, authentic warmth that turns an everyday meal into a memory.",
   };
 
+  const taglineOverrides: Record<string, string> = {
+    "Charcha Green Tea": "The Daily Detoxify",
+  };
+
+  const closingNoteOverrides: Record<string, string> = {
+    "Charcha Green Tea": "Good conversations begin with good health",
+  };
+
   $: displayProducts = pageData.productSection
     .filter((p) => !/coff/i.test(p.title))
     .map((p) => ({
       ...p,
       description: descriptionOverrides[p.title] ?? p.description,
+      tagline: taglineOverrides[p.title],
+      closingNote: closingNoteOverrides[p.title],
     }));
 
   let selectedCoffee = 0;
@@ -70,7 +80,14 @@
 
   <div id="products" class="pt-14 md:pt-20">
     {#each displayProducts as product, i}
-      <Product {product} id={slugify(product.title)} isReverse={i % 2 === 1} dark={i % 2 === 1} />
+      <Product
+        {product}
+        id={slugify(product.title)}
+        isReverse={i % 2 === 1}
+        dark={i % 2 === 1}
+        tagline={product.tagline}
+        closingNote={product.closingNote}
+      />
     {/each}
   </div>
 
