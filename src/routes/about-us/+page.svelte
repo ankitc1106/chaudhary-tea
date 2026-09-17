@@ -66,18 +66,24 @@
         <span class="text-gold-dark uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold">
           It Started With One Cup
         </span>
-        <h1 class="text-3xl md:text-5xl font-inria">A Family Blend,<br />Grown Up</h1>
+        <h1 class="text-3xl md:text-5xl font-inria">A Charcha on Who We Are</h1>
         <div class="w-12 md:w-16 h-[2px] bg-gold"></div>
         <p class="text-sm md:text-lg text-charcoal/70 font-camby leading-relaxed max-w-lg">
-          Choudhary's Charcha began as a family tea blend, brewed the way it
-          always was — real leaves, real spices, no shortcuts. What started
-          as a small ritual has grown into a full range of teas, spice
-          blends, and coffee. The recipe changed and grew over the years;
-          the idea behind it never did.
+          What began as a venture dedicated to honest chai has evolved into
+          an artisanal collective. From day one, Choudhary's Charcha
+          rejected artificial flavorings in favor of estate-picked leaves
+          and freshly cracked botanicals.
         </p>
         <p class="text-sm md:text-lg text-charcoal/70 font-camby leading-relaxed max-w-lg">
-          Because at the end of the day, the best conversations still happen
-          over a good cup of chai.
+          That obsession with foundational flavor led us into slow-roasted
+          coffees and meticulously sourced whole garam masala. We don't mask
+          ingredients; we let premium terroirs and hand-selected spices do
+          the work.
+        </p>
+        <p class="text-sm md:text-lg text-charcoal/70 font-camby leading-relaxed max-w-lg">
+          Every roast, blend, and whole spice we offer serves a single
+          purpose: bringing depth to your table and substance to the
+          conversations around it.
         </p>
       </div>
       <div use:reveal class="order-1 md:order-2 relative rounded-3xl overflow-hidden group">
