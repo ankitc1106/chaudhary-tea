@@ -11,6 +11,7 @@
   import FeatureSection from "$lib/components/FeatureSection.svelte";
   import coffeeGiftPack from "$lib/images/coffee-gift-pack.png";
   import heroCover from "$lib/images/hero-cover.jpg";
+  import charchaFamily from "$lib/images/charcha-family.jpg";
   import { reveal } from "$lib/actions/reveal";
   import { magnetic } from "$lib/actions/magnetic";
   import { cursorGlow } from "$lib/actions/cursorGlow";
@@ -185,6 +186,6 @@
     </div>
   </div>
 
-  <InfoSection infoDat={pageData.infoSection} />
+  <InfoSection infoDat={{ ...pageData.infoSection, title: "", image: charchaFamily }} />
   <FeatureSection featData={pageData.featureSection} />
 </section>

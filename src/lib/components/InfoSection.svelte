@@ -20,9 +20,11 @@
       >
         Our Heritage
       </span>
-      <h1 class="text-3xl md:text-5xl lg:text-6xl font-inria text-cream">
-        {infoDat.title}
-      </h1>
+      {#if infoDat.title}
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-inria text-cream">
+          {infoDat.title}
+        </h1>
+      {/if}
       <p
         class="text-sm md:text-lg lg:text-xl text-cream/80 font-camby leading-relaxed"
       >
