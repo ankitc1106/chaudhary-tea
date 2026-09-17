@@ -9,6 +9,7 @@
   import InfoSection from "$lib/components/InfoSection.svelte";
   import FeatureSection from "$lib/components/FeatureSection.svelte";
   import coffeeGiftPack from "$lib/images/coffee-gift-pack.png";
+  import heroCover from "$lib/images/hero-cover.jpg";
   import { reveal } from "$lib/actions/reveal";
   import { magnetic } from "$lib/actions/magnetic";
   import { cursorGlow } from "$lib/actions/cursorGlow";
@@ -79,8 +80,8 @@
 
 <section class="w-full overflow-x-clip bg-cream">
   <Topbar />
-  <Header logo={pageData.logo}>
-    <Hero description={pageData.heroSection.heroText} />
+  <Header bg={heroCover} logo={pageData.logo}>
+    <Hero />
   </Header>
 
   <div id="products" class="pt-14 md:pt-20">

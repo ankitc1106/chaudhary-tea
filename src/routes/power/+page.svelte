@@ -22,10 +22,7 @@
 <section class="w-full overflow-x-clip">
   <Topbar />
   <Header bg={pageData.heroSection.heroImage} logo={pageData.logo}>
-    <Hero
-      defWidth="md:w-[50%] w-[80%]"
-      description={pageData.heroSection.heroText}
-    />
+    <Hero defWidth="md:w-[50%] w-[80%]" />
   </Header>
 
   {#each pageData.productSection as product, i}

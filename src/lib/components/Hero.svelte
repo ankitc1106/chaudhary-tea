@@ -3,33 +3,11 @@
   import { magnetic } from "$lib/actions/magnetic";
 
   export let defWidth: string = "w-[50%]";
-  export let description: string;
 </script>
 
 <div class="max-w-3xl mx-auto flex flex-col items-center gap-4 md:gap-7">
-  <span
-    use:reveal={{ delay: 0 }}
-    class="text-gold uppercase tracking-widest2 text-[0.55rem] md:text-sm font-rubik font-medium"
-  >
-    Brewed For Better Conversations
-  </span>
-
-  <h1
-    use:reveal={{ delay: 80 }}
-    class="font-inria text-cream text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-tight"
-  >
-    Choudhary's <span class="text-gold">Charcha</span>
-  </h1>
-
-  <p
-    use:reveal={{ delay: 200 }}
-    class="text-xs sm:text-sm md:text-xl lg:text-2xl text-cream/85 font-light font-camby leading-relaxed max-w-xl"
-  >
-    {description}
-  </p>
-
   <div
-    use:reveal={{ delay: 300 }}
+    use:reveal={{ delay: 0 }}
     class="flex flex-wrap items-center justify-center gap-3 md:gap-5 pt-2 md:pt-4"
   >
     <a
