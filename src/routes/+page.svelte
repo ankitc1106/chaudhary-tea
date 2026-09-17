@@ -83,7 +83,7 @@
   <Header bg={heroCover} logo={pageData.logo}>
     <div
       use:reveal
-      class="absolute left-[5%] md:left-[8%] top-[16%] md:top-[20%] text-left max-w-[300px] md:max-w-xl"
+      class="absolute left-[5%] md:left-[8%] top-[calc(16%+96px)] md:top-[calc(20%+96px)] text-left max-w-[300px] md:max-w-xl"
     >
       <h1 class="font-berk text-cream text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
         Banaras Ki Chai

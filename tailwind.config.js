@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        berk: ["Beau Rivage", "cursive"],
+        berk: ["Norican", "cursive"],
         camby: ["Cambay", "sans-serif"],
         inria: ["Inria Serif", "sans-serif"],
         rubik: ["Rubik Variable", "sans-serif"],
