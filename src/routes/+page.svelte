@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@iconify/svelte";
   import Topbar from "$lib/components/Topbar.svelte";
   import Hero from "$lib/components/Hero.svelte";
 
@@ -71,6 +72,10 @@
 
   const animatedCoffeePrice = tweened(0, { duration: 450, easing: cubicOut });
   $: if (coffeeVariants.length) animatedCoffeePrice.set(coffeeVariants[selectedCoffee].price);
+
+  $: coffeeWaMessage = coffeeVariants.length
+    ? `Hi! I'd like to order Charcha Arabica Coffee (${coffeeVariants[selectedCoffee].gram}${coffeeVariants[selectedCoffee].unit}) — ₹${coffeeVariants[selectedCoffee].price}.`
+    : "Hi! I'd like to order Charcha Arabica Coffee.";
 </script>
 
 <svelte:head>
@@ -168,12 +173,13 @@
 
         <a
           use:magnetic={0.3}
-          href="https://wa.me/{data.config?.whatsappNumber ?? ''}"
+          href="https://wa.me/{data.config?.whatsappNumber ?? ''}?text={encodeURIComponent(coffeeWaMessage)}"
           target="_blank"
           rel="noreferrer"
-          class="inline-block bg-gold hover:bg-gold-light text-charcoal transition-all duration-200 ease-out px-6 md:px-8 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-rubik font-semibold uppercase tracking-wide"
+          class="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-light text-charcoal transition-all duration-200 ease-out px-6 md:px-8 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-rubik font-semibold uppercase tracking-wide"
         >
-          Enquire on WhatsApp
+          <Icon icon="mdi:whatsapp" class="text-base" />
+          Order on WhatsApp
         </a>
       </div>
     </div>

@@ -3,6 +3,7 @@
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
   import Icon from "@iconify/svelte";
+  import { page } from "$app/stores";
   import type { productItem, variants } from "$lib/types/pageType";
   import { urlForImage } from "$lib/sanity";
   import { reveal } from "$lib/actions/reveal";
@@ -34,6 +35,9 @@
   });
 
   $: animatedPrice.set(varinatList[selected].price);
+
+  $: waMessage = `Hi! I'd like to order ${product.title} (${varinatList[selected].gram}${varinatList[selected].unit}) — ₹${varinatList[selected].price}.`;
+  $: waLink = `https://wa.me/${$page.data.config?.whatsappNumber ?? ""}?text=${encodeURIComponent(waMessage)}`;
 </script>
 
 <section
@@ -119,16 +123,16 @@
         <span class="{dark ? 'text-cream/50' : 'text-charcoal/50'} text-xs md:text-base"
           >/ {varinatList[selected].gram} {varinatList[selected].unit}</span
         >
-        {#if product.buyLink}
-          <a
-            use:magnetic={0.3}
-            href={product.buyLink}
-            target="_blank"
-            class="ml-auto bg-gold hover:bg-gold-light text-charcoal transition-all duration-200 ease-out px-5 md:px-7 py-2 md:py-2.5 rounded-full text-[0.65rem] md:text-sm font-rubik font-semibold uppercase tracking-wide"
-          >
-            Buy Now
-          </a>
-        {/if}
+        <a
+          use:magnetic={0.3}
+          href={waLink}
+          target="_blank"
+          rel="noreferrer"
+          class="ml-auto flex items-center gap-1.5 bg-gold hover:bg-gold-light text-charcoal transition-all duration-200 ease-out px-5 md:px-7 py-2 md:py-2.5 rounded-full text-[0.65rem] md:text-sm font-rubik font-semibold uppercase tracking-wide"
+        >
+          <Icon icon="mdi:whatsapp" class="text-sm md:text-base" />
+          Order on WhatsApp
+        </a>
       </div>
 
       {#if varinatList.length > 1}
