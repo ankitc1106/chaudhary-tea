@@ -1,13 +1,10 @@
 <script lang="ts">
   import Icon from "@iconify/svelte";
-  import { urlForImage } from "$lib/sanity";
   import { reveal } from "$lib/actions/reveal";
   import { magnetic } from "$lib/actions/magnetic";
   import { cursorGlow } from "$lib/actions/cursorGlow";
   import heroCover from "$lib/images/hero-cover.jpg";
-
-  const heritageImage =
-    "https://cdn.sanity.io/images/wyastv6s/production/58a308a19369ebb20c16f4a1ece5ec6351ff9f5a-21599x10799.jpg";
+  import heritageImage from "$lib/images/about-us-heritage.jpg";
 
   const values = [
     {
@@ -88,8 +85,8 @@
       </div>
       <div use:reveal class="order-1 md:order-2 relative rounded-3xl overflow-hidden group">
         <img
-          src={urlForImage(heritageImage, "width", 1000)}
-          alt="Charcha tea gardens"
+          src={heritageImage}
+          alt="Charcha — good conversations, one cup at a time"
           class="w-full h-[280px] md:h-[420px] object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
         <div class="absolute inset-0 ring-1 ring-inset ring-gold/20 rounded-3xl pointer-events-none"></div>
