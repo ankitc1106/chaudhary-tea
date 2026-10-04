@@ -28,10 +28,13 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fontsource-variable/fraunces": "^5.3.0",
+		"@fontsource-variable/instrument-sans": "^5.3.0",
 		"@fontsource-variable/rubik": "^5.0.20",
 		"@fontsource/beau-rivage": "^5.3.0",
 		"@fontsource/berkshire-swash": "^5.0.18",
 		"@fontsource/cambay": "^5.0.8",
+		"@fontsource/cormorant-garamond": "^5.3.0",
 		"@fontsource/inria-serif": "^5.0.18",
 		"@fontsource/norican": "^5.3.0",
 		"@fontsource/satisfy": "^5.3.0",
@@ -39,6 +42,7 @@
 		"@sanity/client": "^6.12.3",
 		"@sanity/image-url": "^1.0.2",
 		"@splidejs/splide-extension-auto-scroll": "^0.5.3",
-		"@splidejs/svelte-splide": "^0.2.9"
+		"@splidejs/svelte-splide": "^0.2.9",
+		"gsap": "^3.15.0"
 	}
 }

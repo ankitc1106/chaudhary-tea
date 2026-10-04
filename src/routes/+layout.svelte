@@ -4,6 +4,11 @@
   import "@fontsource/cambay";
   import "@fontsource/inria-serif/700.css";
   import "@fontsource-variable/rubik";
+  // Luxury redesign (Phase 1+)
+  import "@fontsource-variable/fraunces";
+  import "@fontsource-variable/instrument-sans";
+  import "@fontsource/cormorant-garamond/500.css";
+  import "@fontsource/cormorant-garamond/600.css";
   import "@splidejs/svelte-splide/css";
   import Footer from "$lib/components/layout/Footer.svelte";
   export let data;

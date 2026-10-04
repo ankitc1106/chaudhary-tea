@@ -1,22 +1,24 @@
 <script lang="ts">
-  import Icon from "@iconify/svelte";
   import Topbar from "$lib/components/Topbar.svelte";
   import Hero from "$lib/components/Hero.svelte";
 
   import Header from "$lib/components/layout/Header.svelte";
-  import Product from "$lib/components/Product.svelte";
+  import ProductShelf from "$lib/components/ProductShelf.svelte";
+  import SignatureProduct from "$lib/components/SignatureProduct.svelte";
 
   import type { PageType } from "$lib/types/pageType";
   import InfoSection from "$lib/components/InfoSection.svelte";
   import FeatureSection from "$lib/components/FeatureSection.svelte";
-  import coffeeGiftPack from "$lib/images/coffee-gift-pack.png";
-  import heroCover from "$lib/images/hero-cover.jpg";
+  import BanarasStory from "$lib/components/BanarasStory.svelte";
+  import heroSunrise from "$lib/images/hero-sunrise.png";
+  import banarasStoryImage from "$lib/images/banaras-story.png";
+  import goldTea250g from "$lib/images/gold-tea-250g.png";
+  import goldTea500g from "$lib/images/gold-tea-500g.png";
+  import coffee50g from "$lib/images/coffee-50g.png";
+  import coffee100g from "$lib/images/coffee-100g.png";
+  import elaichi250g from "$lib/images/elaichi-250g.png";
+  import elaichi500g from "$lib/images/elaichi-500g.png";
   import charchaFamily from "$lib/images/charcha-family.jpg";
-  import { reveal } from "$lib/actions/reveal";
-  import { magnetic } from "$lib/actions/magnetic";
-  import { cursorGlow } from "$lib/actions/cursorGlow";
-  import { tweened } from "svelte/motion";
-  import { cubicOut } from "svelte/easing";
   import { slugify } from "$lib/utils/slug";
   export let data;
 
@@ -46,37 +48,63 @@
     "Charcha Green Tea": "Good conversations begin with good health",
   };
 
+  // Mix Masala's 100g and 1kg variants show each other's photo — a local
+  // display-only swap, Sanity's own data is untouched.
+  const shelfVariantImageOverrides: Record<string, Record<string, string>> = {
+    "Charcha Mix Masala": {
+      "100gm": "https://cdn.sanity.io/images/wyastv6s/production/082e80300179c9ea552dea512e89c9ae0fb1b3f2-2800x2000.png",
+      "1kg": "https://cdn.sanity.io/images/wyastv6s/production/616307fb22f702fb383ab6a09931373304ac3bec-2511x1867.png",
+    },
+    "Charcha Elaichi Chai": {
+      "250gm": elaichi250g,
+      "500gm": elaichi500g,
+    },
+  };
+
+  // Elaichi: only the 250g/500g packs are orderable at all — the smaller
+  // sizes (12g/24g/100g) show neither CTA. Mix Masala: same treatment for
+  // 20g/40g/100g — neither CTA, only 250g/500g/1kg are orderable.
+  const shelfAddToOrderVariants: Record<string, string[]> = {
+    "Charcha Elaichi Chai": ["250gm", "500gm"],
+    "Charcha Mix Masala": ["250gm", "500gm", "1kg"],
+  };
+  const shelfOrderOnWhatsAppVariants: Record<string, string[]> = {
+    "Charcha Elaichi Chai": ["250gm", "500gm"],
+    "Charcha Mix Masala": ["250gm", "500gm", "1kg"],
+  };
+
   const coffeeDescription =
     "For every conversation that needed one more cup. Charcha Arabica Coffee is a single-origin, medium roast made from 100% pure Arabica beans, freeze-dried to keep its aroma intact — no chicory, no watered-down excuses. Just honest coffee for people who talk business, gossip, or both.";
   const coffeeTagline = "Bean There, Talked That";
 
   $: displayProducts = pageData.productSection
-    .filter((p) => !/coff/i.test(p.title))
+    .filter((p) => !/coff/i.test(p.title) && !/gold/i.test(p.title))
     .map((p) => ({
       ...p,
       description: descriptionOverrides[p.title] ?? p.description,
       tagline: taglineOverrides[p.title],
       closingNote: closingNoteOverrides[p.title],
+      // Elaichi no longer sells 1kg/3kg packs.
+      variants:
+        p.title === "Charcha Elaichi Chai"
+          ? p.variants.filter((v) => parseInt(v.gram as string) < 1000)
+          : p.variants,
     }));
 
-  let selectedCoffee = 0;
-  $: coffeeVariants = (
-    pageData.productSection.find((p) => /coff/i.test(p.title))?.variants ?? []
-  ).map((a) => {
-    const weight = parseInt(a.gram as string);
-    return {
-      ...a,
-      gram: (weight >= 1000 ? weight / 1000 : weight).toString(),
-      unit: weight >= 1000 ? "kg" : "gm",
-    };
-  });
+  // Gold Tea is pulled out of the generic product loop and rendered as its
+  // own signature moment (SignatureProduct) directly below the hero.
+  $: goldTeaSource = pageData.productSection.find((p) => /gold/i.test(p.title));
+  $: goldTeaProduct = goldTeaSource
+    ? { ...goldTeaSource, description: descriptionOverrides[goldTeaSource.title] ?? goldTeaSource.description }
+    : undefined;
+  $: goldTeaTagline = goldTeaSource ? taglineOverrides[goldTeaSource.title] ?? "" : "";
+  $: goldTeaClosingNote = goldTeaSource ? closingNoteOverrides[goldTeaSource.title] : undefined;
 
-  const animatedCoffeePrice = tweened(0, { duration: 450, easing: cubicOut });
-  $: if (coffeeVariants.length) animatedCoffeePrice.set(coffeeVariants[selectedCoffee].price);
-
-  $: coffeeWaMessage = coffeeVariants.length
-    ? `Hi! I'd like to order Charcha Arabica Coffee (${coffeeVariants[selectedCoffee].gram}${coffeeVariants[selectedCoffee].unit}) — ₹${coffeeVariants[selectedCoffee].price}.`
-    : "Hi! I'd like to order Charcha Arabica Coffee.";
+  // Coffee mirrors Gold Tea's signature treatment — pulled out of the
+  // generic loop, rendered via SignatureProduct with reverse layout and a
+  // neutral (non-ember) grade per the approved plan.
+  $: coffeeSource = pageData.productSection.find((p) => /coff/i.test(p.title));
+  $: coffeeProduct = coffeeSource ? { ...coffeeSource, description: coffeeDescription } : undefined;
 </script>
 
 <svelte:head>
@@ -86,104 +114,40 @@
 
 <section class="w-full overflow-x-clip bg-cream">
   <Topbar />
-  <Header bg={heroCover} logo={pageData.logo}>
-    <div
-      use:reveal
-      class="absolute left-[5%] md:left-[8%] top-[calc(16%+96px)] md:top-[calc(20%+96px)] text-left max-w-[300px] md:max-w-xl"
-    >
-      <h1 class="font-berk text-cream text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
-        Banaras Ki Chai
-      </h1>
-      <h1 class="font-berk text-gold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight -mt-2 md:-mt-3">
-        Duniya ki Charcha
-      </h1>
-      <div class="w-12 md:w-16 h-[3px] bg-gold rounded-full mt-3 md:mt-4"></div>
-    </div>
-    <Hero />
+  <Header bg={heroSunrise} logo={pageData.logo} motion="kenBurns">
+    <Hero title="Bolne Wali" titleSecondLine="Chai" subtitle="Banaras ki Chai. Duniya ki Charcha." />
   </Header>
 
+  {#if goldTeaProduct}
+    <SignatureProduct
+      product={goldTeaProduct}
+      tagline={goldTeaTagline}
+      closingNote={goldTeaClosingNote}
+      id={slugify(goldTeaProduct.title)}
+      variantImages={{ "250gm": goldTea250g, "500gm": goldTea500g }}
+    />
+  {/if}
+
+  {#if coffeeProduct}
+    <SignatureProduct
+      product={coffeeProduct}
+      tagline={coffeeTagline}
+      id={slugify(coffeeProduct.title)}
+      reverse={true}
+      grade="neutral"
+      variantImages={{ "50gm": coffee50g, "100gm": coffee100g }}
+    />
+  {/if}
+
+  <BanarasStory image={banarasStoryImage} />
+
   <div id="products">
-    {#each displayProducts as product, i}
-      <Product
-        {product}
-        id={slugify(product.title)}
-        isReverse={i % 2 === 1}
-        dark={i % 2 === 1}
-        tagline={product.tagline}
-        closingNote={product.closingNote}
-      />
-    {/each}
-  </div>
-
-  <div
-    id={slugify(
-      pageData.productSection.find((p) => /coff/i.test(p.title))?.title ?? "arabica-coffee"
-    )}
-    use:cursorGlow
-    class="relative bg-cream py-16 md:py-28 px-5 md:px-16 lg:px-24 overflow-hidden border-t border-gold/10 scroll-mt-20 md:scroll-mt-24"
-  >
-    <div class="max-w-screen-2xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-      <div use:reveal class="order-2 md:order-1 relative group overflow-hidden rounded-3xl p-6 md:p-10">
-        <div class="absolute -inset-4 border border-gold/30 rounded-3xl hidden md:block pointer-events-none z-10"></div>
-        <div class="animate-float">
-          <img
-            src={coffeeGiftPack}
-            alt="Choudhary's Charcha Arabica Coffee Gift Pack"
-            class="relative w-full max-h-[440px] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.45)] transition-transform duration-700 ease-out group-hover:scale-105"
-          />
-        </div>
-      </div>
-      <div class="order-1 md:order-2 space-y-4 md:space-y-6 text-charcoal">
-        <span use:reveal={{ delay: 0 }} class="text-gold-dark uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold">
-          {coffeeTagline}
-        </span>
-        <h1 use:reveal={{ delay: 90 }} class="text-3xl md:text-5xl lg:text-6xl font-inria">
-          Charcha Arabica Coffee
-        </h1>
-        <div use:reveal={{ delay: 180 }} class="w-12 md:w-20 h-[2px] bg-gold"></div>
-        <p use:reveal={{ delay: 270 }} class="text-sm md:text-lg lg:text-xl text-charcoal/70 font-camby leading-relaxed max-w-lg">
-          {coffeeDescription}
-        </p>
-
-        {#if coffeeVariants.length}
-          <div use:reveal={{ delay: 360 }} class="flex flex-wrap items-center gap-3 md:gap-4">
-            <div class="text-xl md:text-3xl font-inria font-medium text-charcoal tabular-nums">
-              &#8377;{Math.round($animatedCoffeePrice)}
-            </div>
-            <span class="text-charcoal/50 text-xs md:text-base"
-              >/ {coffeeVariants[selectedCoffee].gram} {coffeeVariants[selectedCoffee].unit}</span
-            >
-          </div>
-
-          {#if coffeeVariants.length > 1}
-            <div use:reveal={{ delay: 450 }} class="flex flex-wrap gap-2 md:gap-3">
-              {#each coffeeVariants as v, i}
-                <button
-                  on:click={() => (selectedCoffee = i)}
-                  class="px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[0.6rem] md:text-sm font-rubik border transition-all duration-300 {selectedCoffee ===
-                  i
-                    ? 'bg-gold border-gold text-charcoal'
-                    : 'border-charcoal/20 text-charcoal/70 hover:border-gold-dark/60'}"
-                >
-                  {v.gram} {v.unit}
-                </button>
-              {/each}
-            </div>
-          {/if}
-        {/if}
-
-        <a
-          use:magnetic={0.3}
-          href="https://wa.me/{data.config?.whatsappNumber ?? ''}?text={encodeURIComponent(coffeeWaMessage)}"
-          target="_blank"
-          rel="noreferrer"
-          class="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-light text-charcoal transition-all duration-200 ease-out px-6 md:px-8 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-rubik font-semibold uppercase tracking-wide"
-        >
-          <Icon icon="mdi:whatsapp" class="text-base" />
-          Order on WhatsApp
-        </a>
-      </div>
-    </div>
+    <ProductShelf
+      products={displayProducts}
+      variantImageOverrides={shelfVariantImageOverrides}
+      addToOrderVariantsByProduct={shelfAddToOrderVariants}
+      orderOnWhatsAppVariantsByProduct={shelfOrderOnWhatsAppVariants}
+    />
   </div>
 
   <InfoSection infoDat={{ ...pageData.infoSection, title: "", image: charchaFamily }} />

@@ -23,15 +23,6 @@ export async function GET({}) {
     <loc>https://choudharys.in/contact-us/</loc>
     <changefreq>daily</changefreq>
     </url>
-    <url>
-    <loc>https://choudharys.in/shahi/</loc>
-    <changefreq>daily</changefreq>
-    </url>
-    <url>
-    <loc>https://choudharys.in/power/</loc>
-    <changefreq>daily</changefreq>
-    </url> 
-   
     </urlset>`.trim(),
     {
       headers: {

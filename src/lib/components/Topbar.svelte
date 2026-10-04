@@ -1,12 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { page } from "$app/stores";
   import { isNavOpen } from "$lib/state";
-  import type { ConfigType } from "$lib/types/configType";
   import Icon from "@iconify/svelte";
   import charchaLogo from "$lib/images/charcha-logo.png";
 
-  let config = $page.data.config as ConfigType;
   let scrolled = false;
 
   onMount(() => {
@@ -36,7 +33,7 @@
 
     <a
       href="/contact-us"
-      class="flex items-center text-[0.6rem] md:text-sm md:gap-2 gap-1 text-gold hover:text-gold-light transition-colors duration-300"
+      class="flex items-center font-body text-[0.7rem] md:text-sm md:gap-2 gap-1 text-gold hover:text-gold-light transition-colors duration-300"
     >
       <span class="hidden sm:inline">Let's Talk</span>
       <Icon
@@ -45,17 +42,4 @@
       />
     </a>
   </div>
-  {#if config.topBar}
-    <div
-      class="overflow-hidden transition-all duration-500 {scrolled
-        ? 'max-h-0 opacity-0'
-        : 'max-h-8 opacity-100 mt-2 md:mt-3'}"
-    >
-      <p
-        class="text-center text-cream/70 tracking-widest2 uppercase text-[0.55rem] md:text-xs"
-      >
-        {config.topBar}
-      </p>
-    </div>
-  {/if}
 </nav>

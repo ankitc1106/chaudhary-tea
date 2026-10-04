@@ -8,6 +8,12 @@ export default {
         camby: ["Cambay", "sans-serif"],
         inria: ["Inria Serif", "sans-serif"],
         rubik: ["Rubik Variable", "sans-serif"],
+        // Luxury redesign (Phase 1+) — display/body pair, additive to the
+        // existing keys above so not-yet-migrated sections are unaffected.
+        display: ["Fraunces Variable", "serif"],
+        body: ["Instrument Sans Variable", "sans-serif"],
+        // Hero headline only, per visual-reference revision.
+        hero: ["Cormorant Garamond", "serif"],
       },
       backgroundImage: {
         "hero-pattern": "url('/src/lib/images/sahiHero.png')",

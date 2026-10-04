@@ -1,5 +1,5 @@
-// import adapter from "@sveltejs/adapter-auto"; // use this locally on Windows ARM64 (workerd has no win32-arm64 build)
-import adapter from "@sveltejs/adapter-cloudflare";
+import adapter from "@sveltejs/adapter-auto"; // use this locally on Windows ARM64 (workerd has no win32-arm64 build)
+// import adapter from "@sveltejs/adapter-cloudflare";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
