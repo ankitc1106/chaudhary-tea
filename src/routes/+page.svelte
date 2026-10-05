@@ -20,7 +20,42 @@
   import elaichi250g from "$lib/images/elaichi-250g.png";
   import elaichi500g from "$lib/images/elaichi-500g.png";
   import { slugify } from "$lib/utils/slug";
+  import { onMount } from "svelte";
+  import { afterNavigate } from "$app/navigation";
   export let data;
+
+  // Product nav links (Footer, sidebar) point at in-page anchors like
+  // /#charcha-gold-tea. Several sections above them (Banaras Story's pinned
+  // scrollytelling, GSAP reveals) grow the document after mount, so the
+  // browser's own one-time fragment scroll lands short or doesn't fire at
+  // all. Wait for the target's position to stop moving, then scroll.
+  function scrollToHash(hash: string) {
+    const id = hash.replace("#", "");
+    if (!id) return;
+    let lastTop = Number.NaN;
+    let stableFrames = 0;
+    function tick() {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const top = el.getBoundingClientRect().top;
+      stableFrames = Math.abs(top - lastTop) < 1 ? stableFrames + 1 : 0;
+      lastTop = top;
+      if (stableFrames >= 6) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  onMount(() => {
+    if (window.location.hash) scrollToHash(window.location.hash);
+  });
+
+  afterNavigate(({ to }) => {
+    if (to?.url.hash) scrollToHash(to.url.hash);
+  });
 
   let pageData: PageType = data.pageData;
 
