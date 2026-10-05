@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Topbar from "$lib/components/Topbar.svelte";
   import Hero from "$lib/components/Hero.svelte";
 
   import Header from "$lib/components/layout/Header.svelte";
@@ -148,7 +147,6 @@
 </svelte:head>
 
 <section class="w-full overflow-x-clip bg-cream">
-  <Topbar />
   <Header bg={heroSunrise} logo={pageData.logo} motion="kenBurns">
     <Hero title="Bolne Wali" titleSecondLine="Chai" subtitle="Banaras ki Chai. Duniya ki Charcha." />
   </Header>

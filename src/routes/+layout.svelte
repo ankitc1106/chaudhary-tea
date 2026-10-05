@@ -13,6 +13,7 @@
   import Footer from "$lib/components/layout/Footer.svelte";
   export let data;
   import Sidebar from "$lib/components/layout/Sidebar.svelte";
+  import Topbar from "$lib/components/Topbar.svelte";
   import Icon from "@iconify/svelte";
 </script>
 
@@ -40,6 +41,7 @@
 </svelte:head>
 
 <main class="relative">
+  <Topbar />
   <Sidebar />
   <slot />
 
