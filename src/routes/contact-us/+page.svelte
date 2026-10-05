@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
+  import Icon from "@iconify/svelte";
   import type { ConfigType } from "$lib/types/configType";
   import type { contactType } from "$lib/types/contactType";
   import heroCover from "$lib/images/hero-cover.jpg";
@@ -7,7 +8,23 @@
   const config = $page.data.config as ConfigType;
   const contact = $page.data.contact as contactType;
 
-  $: socials = (config.socialLinks ?? []).filter((s) => s.link);
+  // Sanity's socialLinks only reliably has Instagram — the Facebook entry's
+  // stored link ("http://gfa.cpo") is broken. This maps to proper brand
+  // icons and the real Facebook URL as a local display override; Sanity
+  // itself isn't touched.
+  const socialIconMap: Record<string, { icon: string; label: string; href?: string }> = {
+    facebook: { icon: "mdi:facebook", label: "Facebook", href: "https://www.facebook.com/charcha.tea.coffee" },
+    instagram: { icon: "mdi:instagram", label: "Instagram" },
+  };
+
+  $: socials = (config.socialLinks ?? [])
+    .map((s) => {
+      const key = /insta/i.test(s.name) ? "instagram" : /face/i.test(s.name) ? "facebook" : null;
+      if (!key) return null;
+      const known = socialIconMap[key];
+      return { label: known.label, icon: known.icon, link: known.href ?? s.link };
+    })
+    .filter((s): s is { label: string; icon: string; link: string } => !!s);
 
   const labelClass = "font-body text-[0.65rem] uppercase tracking-widest2 text-gold-dark font-semibold";
   const fieldLabelClass = "font-body text-[0.65rem] uppercase tracking-widest2 text-cream/40";
@@ -72,16 +89,17 @@
         {#if socials.length}
           <div class="pt-8">
             <div class={labelClass}>Follow Along</div>
-            <ul class="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+            <ul class="mt-4 flex items-center gap-5">
               {#each socials as s}
                 <li>
                   <a
                     href={s.link}
                     target="_blank"
                     rel="noreferrer"
-                    class="min-h-[44px] inline-flex items-center font-body text-base text-charcoal hover:text-gold-dark transition-colors focus-visible:outline-none focus-visible:text-gold-dark"
+                    aria-label={s.label}
+                    class="flex items-center justify-center w-12 h-12 text-charcoal hover:text-gold-dark transition-colors focus-visible:outline-none focus-visible:text-gold-dark"
                   >
-                    {s.name}
+                    <Icon icon={s.icon} class="w-7 h-7" />
                   </a>
                 </li>
               {/each}
