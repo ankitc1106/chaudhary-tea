@@ -10,6 +10,7 @@
   import InfoSection from "$lib/components/InfoSection.svelte";
   import FeatureSection from "$lib/components/FeatureSection.svelte";
   import BanarasStory from "$lib/components/BanarasStory.svelte";
+  import GiftingBand from "$lib/components/GiftingBand.svelte";
   import heroSunrise from "$lib/images/hero-sunrise.png";
   import banarasStoryImage from "$lib/images/banaras-story.png";
   import goldTea250g from "$lib/images/gold-tea-250g.png";
@@ -149,6 +150,8 @@
       orderOnWhatsAppVariantsByProduct={shelfOrderOnWhatsAppVariants}
     />
   </div>
+
+  <GiftingBand />
 
   <InfoSection infoDat={{ ...pageData.infoSection, title: "", image: charchaFamily }} />
   <FeatureSection featData={pageData.featureSection} />
