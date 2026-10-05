@@ -140,7 +140,7 @@
     </div>
   </div>
 
-  <div class="bg-charcoal px-5 md:px-16 lg:px-24 pb-16 md:pb-24">
+  <div class="bg-[#241A16] px-5 md:px-16 lg:px-24 pb-16 md:pb-24">
     <div class="max-w-screen-xl mx-auto border-t border-gold/15 pt-10">
       <iframe title="map" class="h-[360px] md:h-[440px] w-full block" src={contact.mapUrl}></iframe>
     </div>
