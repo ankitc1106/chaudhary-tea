@@ -48,7 +48,6 @@
     ></div>
     <div class="absolute inset-0 bg-gradient-to-b from-charcoal/75 via-charcoal/55 to-charcoal"></div>
     <div class="relative h-full flex flex-col items-center justify-center text-center px-5 pt-14 md:pt-16">
-      <span class="block {labelClass} mb-3">Let's Talk</span>
       <h1 class="font-hero font-medium text-cream text-4xl md:text-6xl">{contact.title}</h1>
       <p class="mt-4 text-lg md:text-2xl text-cream/80 font-hero leading-relaxed max-w-md mx-auto">
         Got a question, a bulk order, or just want to talk chai? We're one message away.
