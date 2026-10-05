@@ -9,7 +9,6 @@
   let headlineLine1: HTMLElement;
   let headlineLine2: HTMLElement;
   let supportEl: HTMLElement;
-  let ctaEl: HTMLElement;
 
   let ctx: { revert: () => void } | undefined;
 
@@ -34,8 +33,7 @@
       )
         .fromTo(headlineLine1, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.6, ease: "power1.out" }, 0.3)
         .fromTo(headlineLine2, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.6, ease: "power1.out" }, 0.45)
-        .fromTo(supportEl, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.45, ease: "power1.out" }, 0.75)
-        .fromTo(ctaEl, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.45, ease: "power1.out" }, 1.0);
+        .fromTo(supportEl, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.45, ease: "power1.out" }, 0.75);
 
       // Separate, continuous, very subtle camera drift tied to the
       // section's own natural scroll-through (no pin).
@@ -79,6 +77,13 @@
     style="background: linear-gradient(to right, transparent 40%, rgba(20,14,11,0.35) 65%, rgba(20,14,11,0.55) 100%);"
   ></div>
 
+  <!-- Softens the seam where Gifting & Trade's flat espresso meets this
+       photo — settles in rather than cutting hard. -->
+  <div
+    class="absolute inset-x-0 top-0 h-[10%] pointer-events-none"
+    style="background: linear-gradient(to bottom, #241A16 0%, transparent 100%);"
+  ></div>
+
   <!-- Settles into the footer's espresso tone — taller on mobile where the
        text block sits at the bottom, shorter on desktop. -->
   <div
@@ -97,15 +102,6 @@
       <p bind:this={supportEl} class="mt-4 font-body text-sm md:text-base text-cream/65 leading-relaxed">
         Tea, coffee and masala — made for the moments we share.
       </p>
-      <div class="mt-6">
-        <a
-          bind:this={ctaEl}
-          href="/contact-us"
-          class="min-h-[44px] inline-flex items-center justify-center px-7 rounded text-sm font-body font-medium text-gold border border-gold hover:bg-gold/10 transition-colors"
-        >
-          Talk to Charcha
-        </a>
-      </div>
     </div>
   </div>
 </section>

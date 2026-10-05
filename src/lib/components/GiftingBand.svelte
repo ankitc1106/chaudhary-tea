@@ -65,7 +65,8 @@
 <section
   id="gifting-trade"
   aria-label="Gifting and trade"
-  class="relative bg-[#241A16] px-5 md:px-10 lg:px-16 py-14 md:py-16"
+  class="relative px-5 md:px-10 lg:px-16 py-14 md:py-16"
+  style="background: linear-gradient(to bottom, #EDE6D4 0%, #241A16 8%);"
 >
   <div bind:this={el} use:subtleReveal class="max-w-screen-xl mx-auto">
     <div class="max-w-xl md:ml-[4%] lg:ml-[6%]">
