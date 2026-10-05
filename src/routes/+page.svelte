@@ -11,7 +11,9 @@
   import FeatureSection from "$lib/components/FeatureSection.svelte";
   import BanarasStory from "$lib/components/BanarasStory.svelte";
   import GiftingBand from "$lib/components/GiftingBand.svelte";
+  import ClosingInvitation from "$lib/components/ClosingInvitation.svelte";
   import heroSunrise from "$lib/images/hero-sunrise.png";
+  import closingInvitationImage from "$lib/images/closing-invitation.png";
   import banarasStoryImage from "$lib/images/banaras-story.png";
   import goldTea250g from "$lib/images/gold-tea-250g.png";
   import goldTea500g from "$lib/images/gold-tea-500g.png";
@@ -152,6 +154,8 @@
   </div>
 
   <GiftingBand />
+
+  <ClosingInvitation image={closingInvitationImage} />
 
   <InfoSection infoDat={{ ...pageData.infoSection, title: "", image: charchaFamily }} />
   <FeatureSection featData={pageData.featureSection} />
