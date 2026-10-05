@@ -5,6 +5,7 @@
   import { page } from "$app/stores";
   import type { productItem } from "$lib/types/pageType";
   import { urlForImage } from "$lib/sanity";
+  import { orderTray } from "$lib/state";
 
   export let product: productItem;
   export let tagline: string | undefined = undefined;
@@ -54,6 +55,13 @@
 
   $: waMessage = `Hi! I'd like to order ${product.title} (${varinatList[selected]?.gram}${varinatList[selected]?.unit}) — ₹${displayPrice}.`;
   $: waLink = `https://wa.me/${$page.data.config?.whatsappNumber ?? ""}?text=${encodeURIComponent(waMessage)}`;
+
+  let justAdded = false;
+  function handleAddToOrder() {
+    orderTray.add({ productTitle: product.title, variantLabel: selectedKey, price: displayPrice });
+    justAdded = true;
+    setTimeout(() => (justAdded = false), 1400);
+  }
 </script>
 
 <div {id} class="px-6 md:px-8 py-10 md:py-12 flex flex-col items-start space-y-4 scroll-mt-20 md:scroll-mt-24">
@@ -108,9 +116,10 @@
   <div class="flex flex-wrap items-center gap-4 pt-1">
     {#if canAddToOrder}
       <button
+        on:click={handleAddToOrder}
         class="min-h-[44px] inline-flex items-center justify-center px-5 text-sm font-body font-medium text-gold-dark border border-gold-dark hover:bg-gold/10 transition-colors"
       >
-        Add to order
+        {justAdded ? "Added" : "Add to order"}
       </button>
     {/if}
     {#if canOrderOnWhatsApp}

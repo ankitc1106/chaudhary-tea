@@ -14,6 +14,7 @@
   export let data;
   import Sidebar from "$lib/components/layout/Sidebar.svelte";
   import Topbar from "$lib/components/Topbar.svelte";
+  import OrderTray from "$lib/components/layout/OrderTray.svelte";
   import Icon from "@iconify/svelte";
 </script>
 
@@ -46,6 +47,8 @@
   <slot />
 
   <Footer />
+
+  <OrderTray />
 
   <div>
     <a

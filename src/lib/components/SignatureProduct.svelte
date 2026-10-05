@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
   import { fade } from "svelte/transition";
@@ -8,6 +7,7 @@
   import type { productItem, variants } from "$lib/types/pageType";
   import { urlForImage } from "$lib/sanity";
   import { curtainReveal } from "$lib/actions/curtainReveal";
+  import { orderTray } from "$lib/state";
 
   export let product: productItem;
   export let tagline: string;
@@ -25,10 +25,6 @@
   // for variants where the two now differ. Variants not listed here keep
   // the plain Sanity price, unchanged.
   export let priceOverrides: Record<string, { mrp: number; sp: number }> = {};
-
-  const dispatch = createEventDispatcher<{
-    addToOrder: { product: productItem; variant: variants };
-  }>();
 
   let selected = 0;
 
@@ -104,8 +100,11 @@
     };
   }
 
+  let justAdded = false;
   function handleAddToOrder() {
-    dispatch("addToOrder", { product, variant: varinatList[selected] });
+    orderTray.add({ productTitle: product.title, variantLabel: selectedKey, price: displayPrice });
+    justAdded = true;
+    setTimeout(() => (justAdded = false), 1400);
   }
 </script>
 
@@ -195,7 +194,7 @@
           on:click={handleAddToOrder}
           class="min-h-[44px] inline-flex items-center justify-center gap-1.5 px-6 rounded text-sm font-body font-medium text-gold border border-gold hover:bg-gold/10 transition-colors"
         >
-          Add to order
+          {justAdded ? "Added" : "Add to order"}
         </button>
         <a
           href={waLink}
