@@ -26,8 +26,8 @@
     })
     .filter((s): s is { label: string; icon: string; link: string } => !!s);
 
-  const labelClass = "font-body text-[0.65rem] uppercase tracking-widest2 text-gold-dark font-semibold";
-  const fieldLabelClass = "font-body text-[0.65rem] uppercase tracking-widest2 text-cream/40";
+  const labelClass = "font-body text-xs uppercase tracking-widest2 text-gold-dark font-bold";
+  const fieldLabelClass = "font-body text-xs uppercase tracking-widest2 text-cream/50 font-bold";
   const fieldClass =
     "block w-full bg-transparent border-b border-cream/20 text-cream py-2.5 focus:outline-none focus:border-gold transition-colors";
 </script>
