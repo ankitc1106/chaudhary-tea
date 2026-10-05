@@ -87,7 +87,7 @@
       {/if}
     </div>
 
-    <a href="/about-us" on:click={closeSidebar} class={navRowClass}>About Charcha</a>
+    <a href="/about-us" on:click={closeSidebar} class={navRowClass}>About Us</a>
     <a href="/contact-us" on:click={closeSidebar} class={navRowClass}>Contact</a>
 
     <div class="mt-8">

@@ -107,6 +107,33 @@
     "Charcha Mix Masala": ["250gm", "500gm", "1kg"],
   };
 
+  // MRP (struck through) + selling price, per product/variant — a local
+  // display override, Sanity's own `price` field is untouched. Variants not
+  // listed here (e.g. Elaichi's 12g/24g/100g samples, which aren't
+  // orderable anyway) keep the plain single-price display.
+  const priceOverrides: Record<string, Record<string, { mrp: number; sp: number }>> = {
+    "Charcha Gold Tea": {
+      "250gm": { mrp: 195, sp: 130 },
+      "500gm": { mrp: 390, sp: 250 },
+    },
+    "Charcha Arabica Coffee": {
+      "50gm": { mrp: 400, sp: 250 },
+      "100gm": { mrp: 800, sp: 500 },
+    },
+    "Charcha Green Tea": {
+      "100gm": { mrp: 150, sp: 100 },
+    },
+    "Charcha Elaichi Chai": {
+      "250gm": { mrp: 105, sp: 90 },
+      "500gm": { mrp: 210, sp: 180 },
+    },
+    "Charcha Mix Masala": {
+      "250gm": { mrp: 400, sp: 250 },
+      "500gm": { mrp: 800, sp: 500 },
+      "1kg": { mrp: 1600, sp: 1000 },
+    },
+  };
+
   const coffeeDescription =
     "For every conversation that needed one more cup. Charcha Arabica Coffee is a single-origin, medium roast made from 100% pure Arabica beans, freeze-dried to keep its aroma intact — no chicory, no watered-down excuses. Just honest coffee for people who talk business, gossip, or both.";
   const coffeeTagline = "Bean There, Talked That";
@@ -158,6 +185,7 @@
       closingNote={goldTeaClosingNote}
       id={slugify(goldTeaProduct.title)}
       variantImages={{ "250gm": goldTea250g, "500gm": goldTea500g }}
+      priceOverrides={priceOverrides["Charcha Gold Tea"] ?? {}}
     />
   {/if}
 
@@ -169,6 +197,7 @@
       reverse={true}
       grade="neutral"
       variantImages={{ "50gm": coffee50g, "100gm": coffee100g }}
+      priceOverrides={priceOverrides["Charcha Arabica Coffee"] ?? {}}
     />
   {/if}
 
@@ -180,6 +209,7 @@
       variantImageOverrides={shelfVariantImageOverrides}
       addToOrderVariantsByProduct={shelfAddToOrderVariants}
       orderOnWhatsAppVariantsByProduct={shelfOrderOnWhatsAppVariants}
+      priceOverridesByProduct={priceOverrides}
     />
   </div>
 

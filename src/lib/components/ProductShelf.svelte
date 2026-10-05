@@ -13,6 +13,10 @@
   // Per-product "Order on WhatsApp" restriction, keyed by product title —
   // see ShelfItem's orderOnWhatsAppVariants.
   export let orderOnWhatsAppVariantsByProduct: Record<string, string[]> = {};
+  // Per-product, per-variant MRP/selling-price overrides keyed by product
+  // title, then by normalized "{gram}{unit}" — see ShelfItem's
+  // priceOverrides.
+  export let priceOverridesByProduct: Record<string, Record<string, { mrp: number; sp: number }>> = {};
 </script>
 
 <section class="bg-[#EDE6D4] py-16 md:py-24 px-5 md:px-10 lg:px-16">
@@ -27,6 +31,7 @@
         variantImageOverrides={variantImageOverrides[product.title] ?? {}}
         addToOrderVariants={addToOrderVariantsByProduct[product.title]}
         orderOnWhatsAppVariants={orderOnWhatsAppVariantsByProduct[product.title]}
+        priceOverrides={priceOverridesByProduct[product.title] ?? {}}
       />
     {/each}
   </div>

@@ -21,6 +21,10 @@
   // (e.g. "250gm", "500gm"). Falls back to the Sanity-sourced variant
   // image when a variant has no local override.
   export let variantImages: Record<string, string> = {};
+  // Keyed by normalized "{gram}{unit}" — a local MRP/selling-price override
+  // for variants where the two now differ. Variants not listed here keep
+  // the plain Sanity price, unchanged.
+  export let priceOverrides: Record<string, { mrp: number; sp: number }> = {};
 
   const dispatch = createEventDispatcher<{
     addToOrder: { product: productItem; variant: variants };
@@ -38,13 +42,17 @@
     };
   });
 
+  $: selectedKey = `${varinatList[selected]?.gram}${varinatList[selected]?.unit}`;
+  $: priceOverride = priceOverrides[selectedKey];
+  $: displayPrice = priceOverride?.sp ?? varinatList[selected]?.price ?? 0;
+
   const animatedPrice = tweened(varinatList[selected]?.price ?? 0, {
     duration: 450,
     easing: cubicOut,
   });
-  $: animatedPrice.set(varinatList[selected].price);
+  $: animatedPrice.set(displayPrice);
 
-  $: waMessage = `Hi! I'd like to order ${product.title} (${varinatList[selected].gram}${varinatList[selected].unit}) — ₹${varinatList[selected].price}.`;
+  $: waMessage = `Hi! I'd like to order ${product.title} (${varinatList[selected].gram}${varinatList[selected].unit}) — ₹${displayPrice}.`;
   $: waLink = `https://wa.me/${$page.data.config?.whatsappNumber ?? ""}?text=${encodeURIComponent(waMessage)}`;
 
   $: activeImage =
@@ -147,13 +155,23 @@
         <p class="font-body italic text-sm md:text-base text-gold">{closingNote}</p>
       {/if}
 
-      <div class="flex flex-wrap items-center gap-3 md:gap-4 pt-1">
-        <div class="text-xl md:text-3xl font-body font-medium text-cream tabular-nums">
-          &#8377;{Math.round($animatedPrice)}
+      <div class="pt-1">
+        <div class="flex flex-wrap items-center gap-3 md:gap-4">
+          {#if priceOverride}
+            <span class="text-base md:text-xl font-body text-cream/40 tabular-nums line-through">
+              &#8377;{priceOverride.mrp}
+            </span>
+          {/if}
+          <div class="text-xl md:text-3xl font-body font-medium text-cream tabular-nums">
+            &#8377;{Math.round($animatedPrice)}
+          </div>
+          <span class="text-cream/50 text-xs md:text-sm"
+            >/ {varinatList[selected].gram} {varinatList[selected].unit}</span
+          >
         </div>
-        <span class="text-cream/50 text-xs md:text-sm"
-          >/ {varinatList[selected].gram} {varinatList[selected].unit}</span
-        >
+        {#if priceOverride}
+          <div class="mt-1 font-body text-[0.65rem] text-cream/40">(Inc. of all taxes)</div>
+        {/if}
       </div>
 
       {#if varinatList.length > 1}
