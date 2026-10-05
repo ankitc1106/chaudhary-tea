@@ -33,7 +33,7 @@
 
     <a
       href="/contact-us"
-      class="flex items-center font-body font-bold text-[0.7rem] md:text-sm md:gap-2 gap-1 text-gold hover:text-gold-light transition-colors duration-300"
+      class="flex items-center font-body font-bold text-sm md:text-base md:gap-2 gap-1 text-gold hover:text-gold-light transition-colors duration-300"
     >
       <span class="hidden sm:inline">Let's Talk</span>
       <Icon
