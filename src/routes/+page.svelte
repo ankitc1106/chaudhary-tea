@@ -7,8 +7,6 @@
   import SignatureProduct from "$lib/components/SignatureProduct.svelte";
 
   import type { PageType } from "$lib/types/pageType";
-  import InfoSection from "$lib/components/InfoSection.svelte";
-  import FeatureSection from "$lib/components/FeatureSection.svelte";
   import BanarasStory from "$lib/components/BanarasStory.svelte";
   import GiftingBand from "$lib/components/GiftingBand.svelte";
   import ClosingInvitation from "$lib/components/ClosingInvitation.svelte";
@@ -21,7 +19,6 @@
   import coffee100g from "$lib/images/coffee-100g.png";
   import elaichi250g from "$lib/images/elaichi-250g.png";
   import elaichi500g from "$lib/images/elaichi-500g.png";
-  import charchaFamily from "$lib/images/charcha-family.jpg";
   import { slugify } from "$lib/utils/slug";
   export let data;
 
@@ -156,7 +153,4 @@
   <GiftingBand />
 
   <ClosingInvitation image={closingInvitationImage} />
-
-  <InfoSection infoDat={{ ...pageData.infoSection, title: "", image: charchaFamily }} />
-  <FeatureSection featData={pageData.featureSection} />
 </section>
