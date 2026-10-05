@@ -27,11 +27,8 @@ jobs:
         run: npm run build
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@1
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          projectName: "choudhary-tea"
-          directory: ".svelte-kit/cloudflare"
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          branch: master
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy .svelte-kit/cloudflare --project-name=choudhary-tea --branch=master
