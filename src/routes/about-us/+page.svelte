@@ -1,165 +1,369 @@
 <script lang="ts">
-  import Icon from "@iconify/svelte";
-  import { reveal } from "$lib/actions/reveal";
-  import { magnetic } from "$lib/actions/magnetic";
-  import { cursorGlow } from "$lib/actions/cursorGlow";
+  import { onMount, onDestroy } from "svelte";
+  import { urlForImage } from "$lib/sanity";
+  import { kenBurns } from "$lib/actions/kenBurns";
+  import { maskReveal } from "$lib/actions/maskReveal";
+  import { curtainReveal } from "$lib/actions/curtainReveal";
   import heroCover from "$lib/images/hero-cover.jpg";
-  import heritageImage from "$lib/images/about-us-heritage.jpg";
+  import founderPortrait from "$lib/images/founder-sanjay-kumar-choudhary.png";
+  import kolkataEditorial from "$lib/images/kolkata-tea-tasting-editorial.png";
+  import teaCentre1987 from "$lib/images/tea-centre-1987.jpeg";
+  import teaCentreToday from "$lib/images/tea-centre-today.png";
+  import goldTea500g from "$lib/images/gold-tea-500g.png";
+  import coffee100g from "$lib/images/coffee-100g.png";
+  import elaichi500g from "$lib/images/elaichi-500g.png";
 
-  const values = [
-    {
-      icon: "solar:verified-check-bold",
-      title: "Our Promise",
-      text: "Every batch is sourced from trusted estates and checked for purity before it reaches your cup.",
-    },
-    {
-      icon: "solar:compass-bold",
-      title: "Our Vision",
-      text: "To make honest, full-flavoured chai and spice part of every good conversation across India.",
-    },
-    {
-      icon: "solar:users-group-rounded-bold",
-      title: "Our Community",
-      text: "From the farmers who grow the leaf to the families who brew it — everyone's part of the Charcha story.",
-    },
-    {
-      icon: "solar:leaf-bold",
-      title: "Our Impact",
-      text: "Sustainable sourcing and fair practices, so every cup does a little good beyond the taste.",
-    },
-  ];
+  export let data;
+  const pageData = data.pageData;
+
+  // Charcha Today reuses the exact photography already live on the
+  // homepage's product shelf for every product — sideImage isn't what's
+  // actually shown there, so it isn't used here either.
+  const productImageOverrides: Record<string, string> = {
+    "Charcha Gold Tea": goldTea500g,
+    "Charcha Arabica Coffee": coffee100g,
+    "Charcha Elaichi Chai": elaichi500g,
+    "Charcha Green Tea": urlForImage(
+      "https://cdn.sanity.io/images/wyastv6s/production/d61cea74233b762d08d0263445490b281d4354ba-2500x2241.png",
+      "width",
+      700
+    ),
+    "Charcha Mix Masala": urlForImage(
+      "https://cdn.sanity.io/images/wyastv6s/production/616307fb22f702fb383ab6a09931373304ac3bec-2511x1867.png",
+      "width",
+      700
+    ),
+  };
+
+  $: todayProducts = (pageData?.productSection ?? []).map((p) => ({
+    title: p.title,
+    image: productImageOverrides[p.title] ?? urlForImage(p.sideImage, "width", 700),
+  }));
+
+  // One quiet fade/rise, fired once on first scroll-into-view. Same rAF-poll
+  // approach used by curtainReveal/groupReveal elsewhere in this codebase —
+  // IntersectionObserver proved unreliable here in earlier testing.
+  function fadeReveal(node: HTMLElement, params: { delay?: number; y?: number; threshold?: number } = {}) {
+    const delay = params.delay ?? 0;
+    const y = params.y ?? 14;
+    const threshold = params.threshold ?? 0.2;
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return {};
+
+    node.style.opacity = "0";
+    node.style.transform = `translateY(${y}px)`;
+    node.style.transition = `opacity 650ms ease-out ${delay}ms, transform 650ms ease-out ${delay}ms`;
+
+    let rafId: number;
+    let revealed = false;
+
+    function visibleRatio() {
+      const rect = node.getBoundingClientRect();
+      if (rect.height <= 0) return 0;
+      const visible = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      return Math.max(0, visible) / rect.height;
+    }
+
+    function check() {
+      if (revealed) return;
+      if (visibleRatio() >= threshold) {
+        revealed = true;
+        node.style.opacity = "1";
+        node.style.transform = "translateY(0)";
+        return;
+      }
+      rafId = requestAnimationFrame(check);
+    }
+    rafId = requestAnimationFrame(check);
+
+    return {
+      destroy() {
+        cancelAnimationFrame(rafId);
+      },
+    };
+  }
+
+  // The two "chapter marker" numerals (1987 / 2017) get one shared GSAP
+  // treatment — the only GSAP on this page, kept to these two moments
+  // deliberately rather than used throughout.
+  let num1987El: HTMLElement;
+  let num2017El: HTMLElement;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let ctx: any;
+
+  onMount(async () => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    const gsap = (await import("gsap")).default;
+    const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+    gsap.registerPlugin(ScrollTrigger);
+
+    ctx = gsap.context(() => {
+      [num1987El, num2017El].filter(Boolean).forEach((el) => {
+        gsap.fromTo(
+          el,
+          { opacity: 0, scale: 0.92, filter: "blur(6px)" },
+          {
+            opacity: 1,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 1.1,
+            ease: "power2.out",
+            scrollTrigger: { trigger: el, start: "top 80%", toggleActions: "play none none none" },
+          }
+        );
+      });
+    });
+  });
+
+  onDestroy(() => {
+    ctx?.revert();
+  });
 </script>
 
 <svelte:head>
-  <title>Our Heritage — Choudhary's Charcha</title>
+  <title>Choudhary's Charcha — About Charcha</title>
   <meta
     name="description"
-    content="Discover the story behind Choudhary's Charcha — a family tea tradition turned into teas, spice blends, and coffee, made for good conversations."
+    content="The story of Choudhary's Charcha — Sanjay Kumar Choudhary's journey from learning the tea trade in Kolkata, to founding Tea Centre in Varanasi in 1987, to establishing Teafizz Enterprises Pvt. Ltd. in 2017."
   />
 </svelte:head>
 
 <section class="w-full overflow-x-clip bg-cream">
-  <div class="relative h-[38vh] md:h-[48vh] w-full overflow-hidden bg-charcoal">
+  <!-- 01 Hero -->
+  <div class="relative h-screen w-full overflow-hidden bg-charcoal">
+    <div use:kenBurns={{ duration: 16000, scale: 1.08 }} class="absolute inset-0">
+      <img src={heroCover} alt="" class="w-full h-full object-cover" style="object-position: 50% 30%;" />
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-charcoal/70 via-charcoal/45 to-charcoal"></div>
+    <div class="relative h-full flex flex-col items-center justify-center text-center px-5">
+      <h1
+        use:maskReveal
+        class="font-hero font-medium text-cream text-4xl sm:text-5xl md:text-7xl leading-[1.15] max-w-4xl"
+      >
+        A Journey Worth Having a <span class="text-gold">Charcha About.</span>
+      </h1>
+      <p
+        use:maskReveal={{ delay: 250 }}
+        class="mt-6 font-hero text-lg md:text-2xl text-cream/80 leading-relaxed max-w-xl"
+      >
+        The story of Choudhary's Charcha begins with tea, experience and a journey that started decades ago.
+      </p>
+    </div>
     <div
-      style="background-image: url({heroCover})"
-      class="absolute inset-0 bg-cover bg-[position:50%_30%]"
+      class="absolute inset-x-0 bottom-0 h-[14%] pointer-events-none"
+      style="background: linear-gradient(to bottom, transparent 0%, #F7F1E4 100%);"
     ></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-charcoal/75 via-charcoal/55 to-charcoal"></div>
-    <div class="relative h-full flex flex-col items-center justify-center text-center px-5 pt-14 md:pt-16">
-      <div use:reveal>
-        <span
-          class="block text-gold uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold mb-3"
-        >
-          Our Story
+  </div>
+
+  <!-- 02 Founder -->
+  <div class="relative bg-cream px-5 md:px-16 lg:px-24 py-16 md:py-28">
+    <div class="max-w-screen-xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+      <div class="relative order-1">
+        <div use:curtainReveal={{ duration: 900 }} class="overflow-hidden bg-charcoal/5">
+          <img
+            src={founderPortrait}
+            alt="Sanjay Kumar Choudhary, founder of Choudhary's Charcha"
+            class="w-full h-[380px] md:h-[520px] object-cover object-top"
+          />
+        </div>
+      </div>
+      <div use:fadeReveal class="order-2 space-y-4 md:space-y-5 text-charcoal">
+        <span class="block font-body text-[0.65rem] md:text-xs uppercase tracking-widest2 text-gold-dark font-bold">
+          The Founder
         </span>
-        <h1 class="font-inria text-cream text-4xl md:text-6xl">Our Heritage</h1>
+        <h2 class="font-hero font-medium text-3xl md:text-5xl leading-[1.15]">Before Charcha, there was tea.</h2>
+        <div class="w-12 h-px bg-gold"></div>
+        <p class="font-body text-base md:text-lg text-charcoal/75 leading-relaxed max-w-lg">
+          At the heart of Choudhary's Charcha is Sanjay Kumar Choudhary, who began his journey in his early
+          twenties.
+        </p>
+        <p class="font-body text-base md:text-lg text-charcoal/75 leading-relaxed max-w-lg">
+          It was during these years that he began working in Kolkata with major tea blenders.
+        </p>
       </div>
     </div>
   </div>
 
-  <div use:cursorGlow class="relative bg-cream py-16 md:py-28 px-5 md:px-16 lg:px-24 overflow-hidden">
-    <div class="max-w-screen-2xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-      <div use:reveal class="order-2 md:order-1 space-y-4 md:space-y-6 text-charcoal">
-        <span class="text-gold-dark uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold">
-          It Started With One Cup
-        </span>
-        <h1 class="text-3xl md:text-5xl font-inria">A Charcha on Who We Are</h1>
-        <div class="w-12 md:w-16 h-[2px] bg-gold"></div>
-        <p class="text-sm md:text-lg text-charcoal/70 font-camby leading-relaxed max-w-lg">
-          What began as a venture dedicated to honest chai has evolved into
-          an artisanal collective. From day one, Choudhary's Charcha
-          rejected artificial flavorings in favor of estate-picked leaves
-          and freshly cracked botanicals.
-        </p>
-        <p class="text-sm md:text-lg text-charcoal/70 font-camby leading-relaxed max-w-lg">
-          That obsession with foundational flavor led us into slow-roasted
-          coffees and meticulously sourced whole garam masala. We don't mask
-          ingredients; we let premium terroirs and hand-selected spices do
-          the work.
-        </p>
-        <p class="text-sm md:text-lg text-charcoal/70 font-camby leading-relaxed max-w-lg">
-          Every roast, blend, and whole spice we offer serves a single
-          purpose: bringing depth to your table and substance to the
-          conversations around it.
-        </p>
-      </div>
-      <div use:reveal class="order-1 md:order-2 relative rounded-3xl overflow-hidden group">
-        <img
-          src={heritageImage}
-          alt="Charcha — good conversations, one cup at a time"
-          class="w-full h-[280px] md:h-[420px] object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        />
-        <div class="absolute inset-0 ring-1 ring-inset ring-gold/20 rounded-3xl pointer-events-none"></div>
-      </div>
-    </div>
-  </div>
-
-  <div use:cursorGlow class="relative bg-charcoal py-16 md:py-24 px-5 md:px-16 text-center overflow-hidden">
-    <div use:reveal class="max-w-3xl mx-auto space-y-5 md:space-y-6">
-      <Icon icon="mdi:format-quote-open" class="text-gold/40 text-4xl md:text-5xl mx-auto" />
-      <p class="font-berk text-cream text-2xl sm:text-3xl md:text-4xl leading-snug">
-        Charcha is more than a name — it's an invitation to slow down, pour a
-        cup, and talk a little longer.
-      </p>
-      <span class="block text-gold uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold">
-        Brew Conversations
-      </span>
-    </div>
-  </div>
-
-  <div use:reveal use:cursorGlow class="bg-cream py-16 md:py-28 px-5 md:px-16 lg:px-24">
-    <div class="max-w-screen-xl mx-auto">
-      <div class="text-center mb-12 md:mb-16">
-        <span class="text-gold-dark uppercase tracking-widest2 text-[0.6rem] md:text-xs font-rubik font-semibold">
-          What We Stand For
-        </span>
-        <h1 class="font-inria text-3xl md:text-5xl mt-2 text-charcoal">Our Values</h1>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-        {#each values as v, i}
-          <div
-            use:reveal={{ delay: i * 90 }}
-            class="group relative border-t border-gold/30 pt-5 space-y-4 px-1 pb-2 rounded-b-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-gold-dark hover:bg-gradient-to-b hover:from-gold/[0.06] hover:to-transparent hover:shadow-[0_20px_40px_-20px_rgba(201,162,74,0.25)]"
-          >
-            <div
-              class="flex items-center justify-center w-12 h-12 rounded-full border border-gold-dark/30 bg-gold/5 transition-all duration-300 group-hover:bg-gold group-hover:border-gold"
-            >
-              <Icon
-                icon={v.icon}
-                class="text-xl text-gold-dark transition-colors duration-300 group-hover:text-charcoal"
-              />
-            </div>
-            <h3 class="font-inria text-lg md:text-xl text-charcoal">{v.title}</h3>
-            <p class="text-sm text-charcoal/70 font-camby leading-relaxed">{v.text}</p>
+  <!-- 03 Kolkata — Learning Tea -->
+  <div class="relative bg-[#241A16]">
+    <div class="absolute inset-x-0 top-0 h-[8%] pointer-events-none" style="background: linear-gradient(to bottom, #F7F1E4 0%, transparent 100%);"></div>
+    <div class="max-w-screen-2xl mx-auto px-5 md:px-10 lg:px-16 py-16 md:py-28">
+      <div class="grid md:grid-cols-[1.5fr_1fr] gap-10 md:gap-16 items-center">
+        <div class="order-2 md:order-1 relative">
+          <div use:curtainReveal={{ duration: 1000 }} class="overflow-hidden">
+            <img
+              src={kolkataEditorial}
+              alt=""
+              class="w-full h-[320px] md:h-[460px] object-cover"
+            />
           </div>
-        {/each}
+          <p class="mt-3 font-body italic text-xs text-cream/45 leading-relaxed">
+            An editorial interpretation of the tea-tasting world of Kolkata.
+          </p>
+        </div>
+        <div use:fadeReveal class="order-1 md:order-2 space-y-4 md:space-y-5 text-cream">
+          <span class="block font-body text-[0.65rem] md:text-xs uppercase tracking-widest2 text-gold-dark font-bold">
+            The Beginning
+          </span>
+          <h2 class="font-hero font-medium text-3xl md:text-5xl leading-[1.15]">Learning the craft of tea.</h2>
+          <div class="w-12 h-px bg-gold"></div>
+          <p class="font-body text-base md:text-lg text-cream/70 leading-relaxed max-w-md">
+            It was in Kolkata, working with major tea blenders, that he learned the traits of tea tasting and built
+            his contacts in the tea world.
+          </p>
+        </div>
       </div>
     </div>
   </div>
 
-  <div use:cursorGlow class="relative bg-charcoal py-16 md:py-24 px-5 md:px-16 text-center overflow-hidden">
-    <div use:reveal class="max-w-xl mx-auto space-y-5 md:space-y-6">
-      <h1 class="font-inria text-cream text-3xl md:text-5xl">Good Chai Deserves Good Company</h1>
-      <p class="text-sm md:text-lg text-cream/70 font-camby leading-relaxed">
-        Explore our full range or reach out — we'd love to hear from you.
-      </p>
-      <div class="flex flex-wrap items-center justify-center gap-3 md:gap-5 pt-2">
-        <a
-          use:magnetic={0.3}
-          href="/#products"
-          class="inline-block bg-gold hover:bg-gold-light text-charcoal transition-all duration-200 ease-out px-6 md:px-8 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-rubik font-semibold uppercase tracking-wide"
+  <!-- 04 1987 — Tea Centre -->
+  <div class="relative bg-[#241A16] px-5 md:px-16 lg:px-24 py-16 md:py-28">
+    <div class="max-w-screen-xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+      <div use:fadeReveal class="order-2 md:order-1 space-y-4 md:space-y-5 text-cream">
+        <p
+          bind:this={num1987El}
+          class="font-hero font-medium text-gold text-[5.5rem] sm:text-[7rem] md:text-[8.5rem] leading-none"
         >
-          Explore Our Range
-        </a>
-        <a
-          use:magnetic={0.3}
-          href="/contact-us"
-          class="inline-block border border-gold/60 text-gold hover:bg-gold/10 transition-all duration-200 ease-out px-6 md:px-8 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-rubik font-medium uppercase tracking-wide"
-        >
-          Get in Touch
-        </a>
+          1987
+        </p>
+        <h2 class="font-hero font-medium text-3xl md:text-5xl leading-[1.15]">Tea Centre</h2>
+        <p class="font-body text-base md:text-lg text-cream/70 leading-relaxed max-w-md">
+          After his time in Kolkata, he came to Varanasi. In 1987, he started Tea Centre, which deals in bulk and
+          retail CTC Tea.
+        </p>
       </div>
+      <div class="order-1 md:order-2">
+        <div use:curtainReveal={{ duration: 1000 }} class="overflow-hidden border border-gold/20 bg-charcoal">
+          <img
+            src={teaCentre1987}
+            alt="The original Tea Centre signboard in Varanasi"
+            class="w-full h-auto object-contain"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 Tea Centre Today -->
+  <div class="relative bg-cream px-5 md:px-16 lg:px-24 py-16 md:py-24">
+    <div class="max-w-screen-xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+      <div use:fadeReveal class="space-y-4 md:space-y-5 text-charcoal">
+        <h2 class="font-hero font-medium text-2xl md:text-4xl leading-[1.2]">A business that continues.</h2>
+        <p class="font-body text-base md:text-lg text-charcoal/75 leading-relaxed max-w-md">
+          Tea Centre is still one of the biggest wholesalers in Varanasi and is also the highest seller of Charcha
+          Tea.
+        </p>
+      </div>
+      <div use:fadeReveal={{ delay: 120 }}>
+        <div class="overflow-hidden border border-gold-dark/20">
+          <img
+            src={teaCentreToday}
+            alt="Tea Centre's storefront in Varanasi today"
+            class="w-full h-[280px] md:h-[360px] object-cover"
+            style="object-position: 50% 10%;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 2017 — Teafizz Enterprises -->
+  <div class="relative bg-[#241A16] px-5 md:px-16 lg:px-24 py-16 md:py-28 text-center">
+    <div use:fadeReveal class="max-w-2xl mx-auto space-y-4 md:space-y-5">
+      <span class="block font-body text-[0.65rem] md:text-xs uppercase tracking-widest2 text-gold-dark font-bold">
+        A New Chapter
+      </span>
+      <p
+        bind:this={num2017El}
+        class="font-hero font-medium text-gold text-[5.5rem] sm:text-[7rem] md:text-[8.5rem] leading-none"
+      >
+        2017
+      </p>
+      <h2 class="font-hero font-medium text-3xl md:text-5xl leading-[1.15] text-cream">
+        Teafizz Enterprises Pvt. Ltd.
+      </h2>
+      <p class="font-body text-base md:text-lg text-cream/70 leading-relaxed max-w-md mx-auto">
+        In 2017, he founded Teafizz Enterprises Pvt. Ltd., which holds the rights to Charcha.
+      </p>
+    </div>
+  </div>
+
+  <!-- 07 The Three Brands -->
+  <div class="relative bg-cream px-5 md:px-16 lg:px-24 py-16 md:py-28">
+    <div use:fadeReveal class="max-w-screen-xl mx-auto">
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="font-hero font-medium text-3xl md:text-5xl text-charcoal">The Teafizz House</h2>
+        <p class="mt-4 font-body text-base md:text-lg text-charcoal/70 max-w-lg mx-auto">
+          Teafizz also has two other brands: Power and Shahi.
+        </p>
+      </div>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gold/20 text-center"
+      >
+        <div class="py-6 sm:py-0 sm:px-6">
+          <p class="font-hero font-medium text-gold text-2xl md:text-4xl">Charcha</p>
+        </div>
+        <div class="py-6 sm:py-0 sm:px-6">
+          <p class="font-hero font-medium text-charcoal text-2xl md:text-4xl">Power</p>
+        </div>
+        <div class="py-6 sm:py-0 sm:px-6">
+          <p class="font-hero font-medium text-charcoal text-2xl md:text-4xl">Shahi</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 Charcha Today -->
+  <div class="relative bg-[#241A16] px-5 md:px-16 lg:px-24 py-16 md:py-28">
+    <div class="max-w-screen-xl mx-auto">
+      <div use:fadeReveal class="text-center mb-12 md:mb-16">
+        <h2 class="font-hero font-medium text-3xl md:text-5xl text-cream leading-[1.2] max-w-2xl mx-auto">
+          A brand worth having a charcha about.
+        </h2>
+        <p class="mt-4 font-body text-base md:text-lg text-cream/70 max-w-xl mx-auto">
+          He has made Charcha a brand worth having a charcha about.
+        </p>
+      </div>
+
+      {#if todayProducts.length}
+        <div use:fadeReveal={{ delay: 120 }} class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-8">
+          {#each todayProducts as p}
+            <div class="text-center">
+              <div class="aspect-square bg-cream/5 flex items-center justify-center p-4 md:p-6">
+                <img src={p.image} alt={p.title} class="max-w-full max-h-full object-contain" />
+              </div>
+              <p class="mt-3 font-body text-xs md:text-sm text-cream/70">{p.title}</p>
+            </div>
+          {/each}
+        </div>
+      {/if}
+    </div>
+  </div>
+
+  <!-- 09 Closing -->
+  <div class="relative h-[70vh] md:h-[80vh] w-full overflow-hidden bg-charcoal">
+    <div use:kenBurns={{ duration: 16000, scale: 1.06 }} class="absolute inset-0">
+      <img src={heroCover} alt="" class="w-full h-full object-cover" style="object-position: 50% 45%;" />
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-charcoal/80 via-charcoal/60 to-charcoal"></div>
+    <div class="relative h-full flex flex-col items-center justify-center text-center px-5">
+      <h2 use:fadeReveal class="font-hero font-medium text-cream text-4xl md:text-6xl leading-[1.15]">
+        Charcha Continues.
+      </h2>
+      <p use:fadeReveal={{ delay: 120 }} class="mt-4 font-body text-base md:text-lg text-cream/75">
+        Banaras ki Chai. Duniya ki Charcha.
+      </p>
+      <a
+        use:fadeReveal={{ delay: 240 }}
+        href="/"
+        class="mt-8 min-h-[44px] inline-flex items-center gap-2 font-body text-sm text-gold hover:text-gold-light transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/70 focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal rounded-sm"
+      >
+        Explore Charcha
+        <span aria-hidden="true">→</span>
+      </a>
     </div>
   </div>
 </section>
